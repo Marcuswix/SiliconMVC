@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿    <section id="sign-in">
+        <div class="container">
+            <form class="sign-in-form">
+            <div class="headlines">
+                <h1>Welcome Back</h1>
+                <p>Don’t have an account yet? <a asp-controller="Account" asp-action="SignUp">Sign up here.</a></p>
+            </div>
+                <div>
+                    <label><b>Email</b></label>
+                    <div class="input-theme"><input placeholder="Enter your email address" /></div>
+                </div>
+                <div>
+                    <label><b>Password</b></label>
+                    <div class="input-theme"><input placeholder="********" /></div>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Remember me
+                    </label>
+                </div>
+                <button class="btn-theme-s">Sign in</button>
+                <a class="center" href="#">Forgot your password?</a>
+
+                <hr />
+
+                <div class="loginSocialContainer">
+                    <b>Or sign in with your social network</b>
+                    <div class="btn-container">
+                        <button class="btn-gray"><i class="fa-brands fa-google"></i>Google</button>
+                        <button class="btn-gray"><i class="fa-brands fa-facebook-f"></i>Facebook</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>

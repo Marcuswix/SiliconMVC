@@ -1,50 +1,49 @@
 @media(min-width: 10px)
 {
-    #sign-up
-    {
+    #sign-up {
         padding-block: 1rem;
-        
-        .container
-        {
+
+        .container {
             padding: 0rem;
 
-            .headlines
-            {
+            .headlines {
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
-                margin-bottom: 1rem;
             }
 
-                .btn-theme-s
-                {
-                    width: 100%;
-                }
+            .btn-theme-s {
+                width: 100%;
+            }
 
-                .form-check
-                {
-                    padding-block: 0.5rem;
-                }
+            .form-check {
+                padding-block: 0.5rem;
+            }
+
+            .name-box {
+                display: grid;
+                grid-template-columns: 1fr;
+                row-gap: 2rem;
+            }
         }
     }
 }
 
 @media(min-width: 1820px)
 {
-    #sign-up
-    {
+    #sign-up {
 
-        .name-box
-        {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 2rem;
-        }
+        padding-top: 4rem;
 
-        .container
-        {
-            .sign-in-form
-            {
+        .container {
+
+            .name-box {
+                grid-template-columns: 1fr 1fr;
+                row-gap: 0rem;
+                column-gap: 2rem;
+            }
+
+            .sign-in-form {
                 margin-block: 1rem;
                 width: 34rem;
             }

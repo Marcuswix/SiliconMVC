@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿    <section id="sign-up">
+        <div class="container">
+            <form class="sign-in-form">
+            <div class="headlines">
+                <h1>Create Account</h1>
+                <p>Already have an account?<a asp-controller="Account" asp-action="SignIn"> Sign in here.</a></p>
+            </div>
+                <div class="name-box">
+                    <div>
+                        <label><b>First name</b></label>
+                        <div class="input-theme"><input placeholder="Enter your first name" /></div>
+                    </div>
+                    <div>
+                        <label><b>Last name</b></label>
+                        <div class="input-theme"><input placeholder="Enter your last name" /></div>
+                    </div>
+                </div>
+
+                <div>
+                    <label><b>Email</b></label>
+                    <div class="input-theme"><input placeholder="Enter your email address" /></div>
+                </div>
+
+                <div>
+                    <label><b>Password</b></label>
+                    <div class="input-theme"><input placeholder="********" /></div>
+                </div>
+                <div>
+                    <label><b>Confirm password</b></label>
+                    <div class="input-theme"><input placeholder="********" /></div>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        I agree to the <a href="#">Terms & Conditions</a>
+                    </label>
+                </div>
+                <button class="btn-theme-s">Sign in</button>
+            </form>
+        </div>
+    </section>
