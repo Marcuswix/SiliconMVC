@@ -1,0 +1,16 @@
+.input-theme
+{
+    border: solid $gray-300 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.4rem;
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+
+    input
+    {
+        outline: none;
+        border: none;
+    }
+}

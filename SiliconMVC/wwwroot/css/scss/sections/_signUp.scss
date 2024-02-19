@@ -1,0 +1,53 @@
+@media(min-width: 10px)
+{
+    #sign-up
+    {
+        padding-block: 1rem;
+        
+        .container
+        {
+            padding: 0rem;
+
+            .headlines
+            {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+                .btn-theme-s
+                {
+                    width: 100%;
+                }
+
+                .form-check
+                {
+                    padding-block: 0.5rem;
+                }
+        }
+    }
+}
+
+@media(min-width: 1820px)
+{
+    #sign-up
+    {
+
+        .name-box
+        {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 2rem;
+        }
+
+        .container
+        {
+            .sign-in-form
+            {
+                margin-block: 1rem;
+                width: 34rem;
+            }
+        }
+    }
+}

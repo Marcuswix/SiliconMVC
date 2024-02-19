@@ -1,0 +1,73 @@
+@media(min-width: 10px)
+{
+    #sign-in
+    {
+        max-width: 1320px;
+        padding-block: 2rem;
+
+        .headlines
+        {
+            display: flex;
+            flex-direction: column;
+            gap:1rem;
+            padding-bottom: 2rem;
+        }
+
+        .container
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1320px;
+        }
+
+        hr
+        {
+            margin-block: 1.5rem;
+        }
+
+        .loginSocialContainer
+        {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            text-align: center;
+
+            .btn-container
+            {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    }
+}
+
+@media(min-width: 1820px)
+{
+    #sign-in
+    {
+        .container
+        {
+            .sign-in-form
+            {
+                width: 34rem;
+            }
+        }
+
+        hr
+        {
+            margin-block: 2rem;
+        }
+
+        .loginSocialContainer
+        {
+
+            .btn-container
+            {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+    }
+}
