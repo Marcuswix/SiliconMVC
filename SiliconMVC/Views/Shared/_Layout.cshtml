@@ -20,8 +20,11 @@
 
             <div class="menu">
                 <nav>
+                    @if (ViewBag.ShowChoices)
+                    {
                     <a class="menu-link" href="#showcase">Overview</a>
                     <a class="menu-link" href="#features">Features</a>
+                    }
                     <a class="menu-link" asp-controller="Contact" asp-action="Index">Contact</a>
                 </nav>
             </div>
@@ -39,12 +42,11 @@
                 <i id="hamburger" class="fa-solid fa-bars"></i>
                 <div id="menu-mobil" class="mobil-menu">
                     <ul>
-                        <a class="menu-link" href="#showcase">
-                        <li>Overview</li></a>
-                        <a class="menu-link" href="#features">
-                        <li>Features</li></a>
-                        <a asp-controller="Contact" asp-action="Index">
-                        <li>Contact</li></a>
+                        <li><a class="menu-link" href="#showcase">Overview</a><</li>
+                        <li><a class="menu-link" href="#features">Features</a></li>
+                        <li><a asp-controller="Contact" asp-action="Index">Contact </a></li>
+                        <li><a asp-controller ="Account" asp-action="SignIn">Sign in</a></li>
+                        <li><a asp-controller ="Account" asp-action="SignUp">Sign Up</a></li>
                     </ul>
                 </div>
             </div>
@@ -62,12 +64,15 @@
 
     <footer id="footer" class="">
         <div class="container">
-            <div class="social-media">
-                <a class="btn-social" href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a class="btn-social" href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
-                <a class="btn-social" href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a class="btn-social" href="#"><i class="fa-brands fa-youtube"></i></a>
-            </div>
+            @if(ViewBag.ShowDiv)
+            {
+                    <div class="social-media">
+                        <a class="btn-social" href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a class="btn-social" href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                        <a class="btn-social" href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a class="btn-social" href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+             }
             <p>&copy; 2024 Silicon. All rights reserved.  Pulvinar urna condimentum amet tempor, ornare integer. Lorem odio justo malesuada suspendisse viverra aliquet quisque turpis non. Feugiat in odio non nunc ornare consectetur.</p>
         </div>
     </footer>

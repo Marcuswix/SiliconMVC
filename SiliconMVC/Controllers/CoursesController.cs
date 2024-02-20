@@ -2,12 +2,12 @@
 
 namespace SiliconMVC.Controllers
 {
-    public class ContactController : Controller
+    public class CoursesController : Controller
     {
         public IActionResult Index()
         {
             ViewBag.ShowDiv = true;
-            ViewData["Title"] = "Contact";
+            ViewData["Title"] = "Our Courses";
             return View();
         }
     }
