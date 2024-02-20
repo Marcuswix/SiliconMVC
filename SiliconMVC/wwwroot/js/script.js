@@ -2,6 +2,7 @@ const toggleButton = document.getElementById("hamburger");
 const menu = document.getElementById("menu-mobil");
 const main = document.getElementById("main");
 const footer = document.getElementById("footer");
+const error = document.getElementById("sign-up");
 
 // En "eventlyssnare" för klickhändelser på hela dokumentet
 document.addEventListener('click', (event) => {
@@ -36,3 +37,9 @@ toggleButton.addEventListener("click", () => {
     footer.classList.remove('overlay')
   }
 });
+
+//if ()
+//    error.classList.add('error')
+
+//else
+//{ error.classList.remove('error') }

@@ -1196,12 +1196,25 @@ header .container .open {
     width: 100%;
   }
   #sign-up .container .form-check {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 1fr 1fr;
     padding-block: 0.5rem;
   }
   #sign-up .container .name-box {
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 2rem;
+  }
+  #sign-up .container span {
+    color: #EF4444;
+  }
+  #sign-up .container .titleAndSpan {
+    display: flex;
+    justify-content: space-between;
+  }
+  #sign-up .container .error {
+    background-color: #FFECEC;
   }
 }
 @media (min-width: 1820px) {

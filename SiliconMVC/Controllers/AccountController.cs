@@ -32,15 +32,18 @@ namespace SiliconMVC.Controllers
             ViewBag.ShowDiv = false;
             ViewBag.ShowChoices = false; 
             ViewData["Title"] = "Sign Up";
-            return View();
+            return View(viewModel);
         }
 
         [Route("/signup")]
         [HttpPost]
         public IActionResult SignUp(SignUpViewModel viewModel)
         {
-            if(ModelState.IsValid == false)
+            if(!ModelState.IsValid)
             {
+                ViewBag.ShowDiv = false;
+                ViewBag.ShowChoices = false;
+                ViewData["Title"] = "Sign Up";
                 return View(viewModel);
             }
             //Detta tar oss till en annan sida om formuläret inte är godkänt.

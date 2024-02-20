@@ -17,6 +17,9 @@
             }
 
             .form-check {
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: 1fr 1fr;
                 padding-block: 0.5rem;
             }
 
@@ -24,6 +27,19 @@
                 display: grid;
                 grid-template-columns: 1fr;
                 row-gap: 2rem;
+            }
+
+            span {
+                color: #EF4444;
+            }
+
+            .titleAndSpan {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .error {
+                background-color: #FFECEC;
             }
         }
     }
