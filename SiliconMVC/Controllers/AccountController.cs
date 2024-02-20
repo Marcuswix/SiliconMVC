@@ -15,13 +15,35 @@ namespace SiliconMVC.Controllers
         }
 
         [Route("/signin")]
+        [HttpGet]
         public IActionResult SignIn()
         {
-
+            var viewModel = new SignInViewModel();
             ViewBag.ShowDiv = false;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Sign In";
-            return View();
+            return View(viewModel);
+        }
+
+        [Route("/signin")]
+        [HttpPost]
+        public IActionResult SignIn(SignInViewModel viewModel)
+        {
+            ViewBag.ShowDiv = false;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Sign In";
+            viewModel.ErrorMessage = "Incorrect email or password";
+
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Account", "Index");
+            }
+            
+
         }
 
         [Route("/signup")]
@@ -39,11 +61,12 @@ namespace SiliconMVC.Controllers
         [HttpPost]
         public IActionResult SignUp(SignUpViewModel viewModel)
         {
-            if(!ModelState.IsValid)
+            ViewBag.ShowDiv = false;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Sign Up";
+
+            if (!ModelState.IsValid)
             {
-                ViewBag.ShowDiv = false;
-                ViewBag.ShowChoices = false;
-                ViewData["Title"] = "Sign Up";
                 return View(viewModel);
             }
             //Detta tar oss till en annan sida om formuläret inte är godkänt.

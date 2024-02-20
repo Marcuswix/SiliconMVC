@@ -9,18 +9,15 @@
             </div>
                 <div class="name-box">
                     <div id="form-firstname">
-                    <div class="titleAndSpan">
                         <label asp-for="Form.FirstName"><b>First name</b></label>
                         <span asp-validation-for="Form.FirstName"></span>
-                    </div>
                         <div class="input-theme">
                         <input asp-for="Form.FirstName" /></div>
+
                     </div>
                     <div id="form-lastname">
-                    <div class="titleAndSpan">
                         <label asp-for="Form.LastName"><b>Last name</b></label>
                         <span asp-validation-for="Form.LastName"></span>
-                        </div>
                         <div class="input-theme">  
                         <input asp-for="Form.LastName"/>
                         </div>
@@ -28,26 +25,22 @@
                 </div>
 
                 <div id="form-email">
-                    <div class="titleAndSpan">
                     <label asp-for="Form.Email"><b>Email</b></label>
                     <span asp-validation-for="Form.Email"></span>
-                    </div>
                     <div class="input-theme">
                     <input asp-for="Form.Email"/>
                     </div>
                 </div>
 
                 <div id="form-password">
-                    <div class="titleAndSpan">
                     <label asp-for="Form.Password"><b>Password</b></label>
                     <span asp-validation-for="Form.Password"></span>
-                    </div>
                     <div class="input-theme">
                     <input asp-for="Form.Password"/>
                     </div>
                 </div>
                 <div id="form-comfirm">
-                    <div class="titleAndSpan">
+                <div id="confirmspan">
                     <label asp-for="Form.ConfirmPassword"><b>Confirm password</b></label>
                     <span asp-validation-for="Form.ConfirmPassword"></span>
                     </div>
@@ -55,14 +48,14 @@
                     <input asp-for="Form.ConfirmPassword"/>
                     </div>
                 </div>
-                    <div class="form-check" >
+                 <div class="form-check" >
                         <div>
-                        <input asp-for="Form.TermsAndConditions" class="form-check-input" type="checkbox" checked="false" id="flexCheckDefault">
+                        <input asp-for="Form.TermsAndConditions" class="form-check-input" type="checkbox" id="flexCheckDefault">
                         <label asp-for="Form.TermsAndConditions" class="form-check-label" for="flexCheckDefault">
                         I agree to the <a asp-controller="About" asp-action="Terms">Terms</a> & <a asp-controller="About" asp-action="Conditions">Conditions</a>
                         </label>
                         </div>
-                        <span asp-validation-for="Form.TermsAndConditions"></span>
+                        <span id="termsspan" asp-validation-for="Form.TermsAndConditions"></span>
                 </div>
 
                 <button class="btn-theme-s" type="submit">Sign in</button>

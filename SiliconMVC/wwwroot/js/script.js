@@ -38,8 +38,5 @@ toggleButton.addEventListener("click", () => {
   }
 });
 
-//if ()
-//    error.classList.add('error')
+checkbox.checked = false;
 
-//else
-//{ error.classList.remove('error') }
