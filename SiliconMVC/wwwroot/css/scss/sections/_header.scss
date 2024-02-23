@@ -17,7 +17,6 @@ header {
         grid-template-columns: 1fr auto;
         grid-template-areas: "logo mobile";
         gap: 40px;
-        position: fixed;
         z-index: 2;
         max-width: 1320px;
         background-color: white;
@@ -122,4 +121,18 @@ header {
             left: 0 !important;
         }
     }
+
+    @media(max-width: 720px) {
+        .container {
+            position: fixed;
+        }
+    }
+
+    @media(min-width: 1820px) {
+        .container {
+            position: relative;
+        }
+    }
 }
+
+

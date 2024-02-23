@@ -1611,7 +1611,6 @@ header .container {
   grid-template-columns: 1fr auto;
   grid-template-areas: "logo mobile";
   gap: 40px;
-  position: fixed;
   z-index: 2;
   max-width: 1320px;
   background-color: white;
@@ -1707,6 +1706,16 @@ header .container .mobil-menu ul li {
 }
 header .container .open {
   left: 0 !important;
+}
+@media (max-width: 720px) {
+  header .container {
+    position: fixed;
+  }
+}
+@media (min-width: 1820px) {
+  header .container {
+    position: relative;
+  }
 }
 
 p {
@@ -5813,7 +5822,7 @@ main {
   }
   #contact .section-container .hideForm {
     position: absolute;
-    right: -100% !important;
+    right: -150% !important;
   }
   #contact .section-container .form-container {
     background-color: white;

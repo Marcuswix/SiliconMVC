@@ -1,4 +1,5 @@
-﻿function formErrorHandler(targetElement, validationResult) {
+﻿function formErrorHandler(targetElement, validationResult)
+{
     let spanElement = document.querySelector(`[data-valmsg-for="${targetElement.name}"]`);
 
     if (validationResult) {
