@@ -1,12 +1,15 @@
-@import '../core/_colors.scss';
+@import '../_core.scss';
 
 @media(min-width: 10px)
 {
     #sign-in {
-        padding-block: 1rem;
-        position: relative;
+        width: 100%;
 
         .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
 
             .headlines {
                 display: flex;
@@ -15,7 +18,7 @@
             }
 
             hr {
-                margin-block: 1.5rem;
+                margin-block: 0rem;
             }
 
             .loginSocialContainer {
@@ -32,7 +35,7 @@
             }
 
             span {
-                color: #EF4444;
+                color: $danger;
                 font-size: 0.9rem;
                 margin-left: 0.2rem;
             }
@@ -46,6 +49,9 @@
         padding-top: 4rem;
 
         .container {
+
+            padding: 1rem;
+
             .sign-in-form {
                 width: 34rem;
                 margin-block: 1rem;

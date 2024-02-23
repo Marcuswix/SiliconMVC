@@ -1,38 +1,39 @@
-@media(min-width: 10px)
-{
-    #account
-    {
-        .grey-color
-        {
+@import '../_core.scss';
+
+@media(min-width: 10px) {
+    #account {
+
+
+        .grey-color {
             color: $gray-600;
+        }
+
+        span {
+            color: $danger;
+            font-size: 0.9rem;
+            margin-left: 0.2rem;
+        }
+
+        hr {
+            margin-block: 2.5rem;
         }
 
         display: grid;
         grid-template-columns: 1fr;
         margin-block: 2rem;
 
-        .leftside
-        {
-            border-right: none;
-            padding-right: 1rem;
+        .leftside {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 1rem;
             padding-top: 2rem;
 
-            h5
-            {
-                margin-top: 1rem;
+            h5 {
                 margin-bottom: 0rem;
             }
 
-            p
-            {
-                margin-bottom: 1.5rem;
-            }
-
-            .image-container
-            {
+            .image-container {
                 position: relative;
                 width: 120px;
                 height: 120px;
@@ -40,20 +41,18 @@
                 border: solid $gray-300 1px;
                 border-radius: 50%;
 
-                .circle
-                {
+                .circle {
                     position: absolute;
                     bottom: 0;
                     right: 0;
-                    width:2rem;
+                    width: 2rem;
                     height: 2rem;
                     border: solid $gray-300 1px;
                     border-radius: 50%;
                     z-index: 1;
                     background-color: white;
 
-                    .arrows
-                    {
+                    .arrows {
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -61,146 +60,94 @@
                 }
             }
 
-            .btn-theme-s
-            {
-                margin-block: 1rem;
+            .btn-theme-s {
                 width: 100%;
             }
 
-            .sign-in-container
-            {
+            .sign-in-container {
                 display: block;
                 padding-inline: 1rem;
                 padding-block: 0.5rem;
-
-                .sign-in
-                {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    b
-                    {
-                        color: black;
-                        margin: 0;
-                    }
-                }
             }
         }
-
         //Right Side
-
-        .container
-        {
+        .containerAccount {
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 0rem;
 
-            h5
-            {
+            h5 {
                 color: $theme;
                 margin-bottom: 1rem;
             }
 
-                #box5
-                {
-                    .bio
-                    {
-                         display: flex; 
-                    }
-                }
-
-                .inputArea
-                {
-                    width: 100%;
-                    border: solid $gray-300 2px;
-                    border-radius: 0.4rem;
-                    padding: 0.6rem;
-                    margin-top: 0.3rem;
-                    height: 6rem;
-                }
-
-            hr
-            {
-                margin-block: 2rem;
-            }
-
-            .sign-in-form-address
-            {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .save-cancel
-            {
+            .save-cancel {
                 display: flex;
                 gap: 1rem;
 
-                .btn-theme
-                { 
+                .btn-theme {
                     width: 10rem;
                 }
 
-                .btn-gray
-                {
+                .btn-gray {
                     width: 7rem;
-                } 
+                }
             }
         }
     }
 }
 
-@media(min-width: 1820px)
-{
-    #account
-    {
-        display: grid;
+@media(min-width: 1820px) {
+    #account {
+
+        .hr {
+            display: none;
+        }
+
         grid-template-columns: 1fr 3fr;
         width: 100%;
         margin-bottom: 6rem;
 
-        .leftside
-        {
+        .leftside {
             border-right: solid $gray-300 2px;
+            padding-right: 1rem;
         }
 
-        .container
-        {
+        .containerAccount {
             padding-left: 4rem;
             display: block;
 
-            .sign-in-form
-            {
+            .sign-in-form {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 column-gap: 2rem;
                 margin-top: 1.5rem;
 
-                #box5
-                {
+                #boxEmail {
+                    grid-column: span 2;
+                }
+
+
+                #boxPhone {
+                    grid-column: span 2;
+                }
+
+                #boxBio {
+                    grid-column: span 2;
+                }
+
+                #boxAddress {
+                    grid-column: span 2;
+                }
+
+                #boxAddress2 {
                     grid-column: span 2;
                 }
             }
 
-            hr{
+            hr {
                 margin-block: 3rem;
-            }
-
-            .sign-in-form-address
-            {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.8rem;
-
-                #boxAddress
-                {
-                    grid-column: span 2;
-                }
-            
-                #boxAddress2
-                {
-                    grid-column: span 2;
-                }
             }
         }
     }

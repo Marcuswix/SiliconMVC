@@ -24,9 +24,8 @@
                 .showcase-headline {
                     h1 {
                         font-size: 0.2rem;
+/*                      text-shadow: 1px 2px 3px #0b0f1947;*/
                     }
-
-                    text-shadow: #0b0f1947 1px 2px 3px;
                 }
 
                 p {
@@ -75,7 +74,6 @@
             .content {
                 .showcase-headline {
                     font-size: 4rem;
-                    text-shadow: #0b0f1947 1px 2px 3px;
                 }
             }
 
@@ -140,6 +138,9 @@
 
                     .logocontainer {
                         justify-items: left;
+                        grid-template-columns: 1fr 1fr 1fr 1fr;
+                        margin-top: 2rem;
+                        gap: 2rem;
                     }
                 }
             }
@@ -151,7 +152,7 @@
 
                 .background-image {
                     bottom: -32%;
-                    right: -45%;
+                    right: -44%;
                     height: 140%;
                     z-index: 1;
                     opacity: 1;

@@ -2,8 +2,8 @@
 
     <section id="sign-in">
         <div class="container">
-            <span>@Model.ErrorMessage</span>
             <form class="sign-in-form" method="post" novalidate>
+            <span>@Model.ErrorMessage</span>
             <div class="headlines">
                 <h1>Welcome Back</h1>
                 <p>Don’t have an account yet? <a asp-controller="Account" asp-action="SignUp">Sign up here.</a></p>
@@ -11,7 +11,8 @@
                 <div id="form-email">
                     <label asp-for="Form.Email"><b>Email</b></label>
                     <span asp-validation-for="Form.Email"></span>
-                    <div class="input-theme"><input asp-for=Form.Email placeholder="Enter your email address" /></div>
+                    <div class="input-theme">
+                    <input asp-for=Form.Email placeholder="Enter your email address" /></div>
                 </div>
                 <div>
                     <label asp-for="Form.Password"><b>Password</b></label>
@@ -39,3 +40,5 @@
             </form>
         </div>
     </section>
+
+@await Html.PartialAsync("_ValidationScriptPartial")

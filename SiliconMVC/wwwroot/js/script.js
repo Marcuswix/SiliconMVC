@@ -2,41 +2,88 @@ const toggleButton = document.getElementById("hamburger");
 const menu = document.getElementById("menu-mobil");
 const main = document.getElementById("main");
 const footer = document.getElementById("footer");
-const error = document.getElementById("sign-up");
+const contactForm = document.getElementById("contact-us");
+const closeContactForm = document.getElementById("x-mark-contact");
+const applicationForm = document.getElementById("application");
+const header = document.getElementById("header");
+const subscribeForm = document.getElementById("subscribeForm");
 
 // En "eventlyssnare" för klickhändelser på hela dokumentet
 document.addEventListener('click', (event) => {
-  const target = event.target;
- 
-  if (target !== menu && target !== toggleButton) 
-  {
-    if (menu.classList.contains('open')) {
-      menu.classList.remove('open');
-      toggleButton.classList.remove('fa-xmark');
-      toggleButton.classList.add('fa-bars');
-      main.classList.remove('overlay')
+    const target = event.target;
+
+    var currentPage = window.location.pathname
+
+    if (target !== menu && target !== toggleButton) {
+        if (menu.classList.contains('open')) {
+            menu.classList.remove('open');
+            toggleButton.classList.remove('fa-xmark');
+            toggleButton.classList.add('fa-bars');
+            main.classList.remove('overlay')
+        }
     }
-  }
+
+    if (currentPage === "/contact")
+    {
+        header.classList.add("headerGrayColor");
+    }
+    else
+    {
+        header.classList.remove("headerGrayColor");
+    }
 });
 
 toggleButton.addEventListener("click", () => {
-  menu.classList.toggle('open');
+    menu.classList.toggle('open');
 
-  if(menu.classList.contains('open')) 
-  {
-    toggleButton.classList.remove('fa-bars');
-    toggleButton.classList.add('fa-xmark');
-    main.classList.add('overlay');
-    footer.classList.add('overlay');
-  } 
-  else 
-  {
-    toggleButton.classList.remove('fa-xmark');
-    toggleButton.classList.add('fa-bars');
-    main.classList.remove('overlay')
-    footer.classList.remove('overlay')
-  }
+    if (menu.classList.contains('open')) {
+        toggleButton.classList.remove('fa-bars');
+        toggleButton.classList.add('fa-xmark');
+        main.classList.add('overlay');
+        footer.classList.add('overlay');
+    }
+    else {
+        toggleButton.classList.remove('fa-xmark');
+        toggleButton.classList.add('fa-bars');
+        main.classList.remove('overlay')
+        footer.classList.remove('overlay')
+    }
 });
 
-checkbox.checked = false;
+function showHideMessage() {
+    if (contactForm.classList.contains("hideForm")) {
+        contactForm.classList.remove("hideForm")
+        applicationForm.classList.add("hideForm")
+    }
+    else {
+        contactForm.classList.add("hideForm")
+    }
+}
+
+function showHideApplication() {
+    if (applicationForm.classList.contains("hideForm"))
+    {
+        applicationForm.classList.remove("hideForm")
+        contactForm.classList.add("hideForm")
+    }
+    else 
+    {
+        applicationForm.classList.add("hideForm")
+    }
+}
+
+function hideMessage() {
+    contactForm.classList.add("hideForm")
+    applicationForm.classList.add("hideForm")
+}
+
+function subscribe(event)
+{
+    event.preventDefault();
+}
+
+
+
+
+/*checkbox.checked = false;*/
 

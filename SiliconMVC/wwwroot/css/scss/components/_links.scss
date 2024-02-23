@@ -1,3 +1,4 @@
+@import '../_core.scss';
 a {
     @include standard-text;
     color: $theme;

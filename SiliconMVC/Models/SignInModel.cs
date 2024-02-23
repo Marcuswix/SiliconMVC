@@ -4,7 +4,6 @@ namespace SiliconMVC.Models
 {
     public class SignInModel
     {
-
         [Display(Name = "Email", Prompt = "Enter your email", Order = 0)]
         [EmailAddress]
         [Required(ErrorMessage = "An email is required")]
@@ -12,7 +11,7 @@ namespace SiliconMVC.Models
 
         [Display(Name = "Password", Prompt = "Enter your password", Order = 1)]
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "A password is required")]
         public string Password { get; set; } = null!;
 
         [Display(Name = "Remeber me", Order = 3)]

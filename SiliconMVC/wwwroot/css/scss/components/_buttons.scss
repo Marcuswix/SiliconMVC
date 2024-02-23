@@ -1,3 +1,5 @@
+@import '../_core.scss';
+
 @mixin button {
     border-radius: 6px;
     text-align: center;
@@ -51,6 +53,19 @@
         background: $gray-700;
         color: $white;
     } 
+}
+
+.btn-transparent {
+    @include button;
+    background: $transparent;
+    color: $gray-800;
+    border: none;
+
+    &:hover {
+        text-decoration: none;
+        background: $gray-700;
+        color: $white;
+    }
 }
 
 .btn-switch {

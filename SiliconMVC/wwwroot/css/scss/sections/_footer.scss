@@ -1,3 +1,5 @@
+@import '../_core.scss';
+
 @media(min-width:10px)
 {
     #footer 
@@ -31,7 +33,7 @@
     
         .container 
         {
-            margin-block: 4rem;
+            margin-block: 3rem;
         }
     }
 }

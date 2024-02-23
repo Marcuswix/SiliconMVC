@@ -1,152 +1,160 @@
+@import '../_core.scss';
+
 @media(min-width: 10px)
 {
-    #subscribe
-    {
+    #subscribe {
         background-color: $gray-100;
         width: 100%;
         padding-inline: 1rem;
         padding-block: 2rem;
 
-        .headline
-        {
-            display: grid;
-            grid-template-columns: auto;
-            text-align: center;
-            img
-            {
-                display: none;
-            }
-        }
-
-        .container
-        {
+        .section-subscribe {
             display: grid;
             grid-template-columns: 1fr;
-            row-gap: 1rem;
-            padding-bottom: 1rem;
-            text-align: center;
+            gap: 2rem;
 
-            .checkbox-container
-            {
-                text-align: left;
-                margin-left: 25%;
+            .headline {
+                display: grid;
+                grid-template-columns: auto;
+                text-align: center;
 
-                .form-check
+                img {
+                    display: none;
+                }
+            }
+
+            .container {
+                display: grid;
+                grid-template-columns: 1fr;
+                row-gap: 1rem;
+                padding-bottom: 1rem;
+                text-align: center;
+                padding: 0rem;
+
+                .checkbox-container {
+                    text-align: left;
+                    margin-left: 25%;
+
+                    .form-check {
+                        margin-block: 0.6rem;
+                    }
+                }
+            }
+
+            .mail-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                justify-items: center;
+                position: relative;
+
+                .subscribeInput {
+                    background-color: white;
+                    border: $gray-300 solid 1px;
+                    border-radius: 0.4rem;
+                    padding-inline: 1rem;
+                    padding-block: 0.2rem;
+                    width: 100%;
+                    display: flex;
+
+                    .icontainer {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    input {
+                        margin: 0;
+                        outline: none;
+                        border: none;
+                    }
+
+                    i {
+                        margin-right: 0.5rem;
+                        color: $gray-400;
+                    }
+                }
+
+                #invalidEmail
                 {
-                    margin-block: 0.6rem;
+                    position: absolute;
+                    bottom: 0%;
+                    left: 50%;
+                    transform: translate(-50%, -600%); 
                 }
             }
         }
-
-        .mail-container
-        {
-            margin-block: 1rem;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;            
-            justify-items: center;
-
-            .subscribeInput
-            {
-                background-color: white;
-                border: $gray-300 solid 1px;
-                border-radius: 0.4rem;
-                padding-inline: 1rem;
-                padding-block: 0.7rem;
-                width: 100%;
-
-                input
-                {
-                    outline: none;
-                    border: none;
-                }
-
-                i
-                {
-                    margin-right: 0.5rem;
-
-                }
-            }
-        }
-
     }
 }
 @media(min-width:1820px)
 {
-    #subscribe
-    {
+    #subscribe {
         background-color: $gray-100;
         padding: 0rem;
         padding-block: 6rem;
         display: flex;
         justify-content: center;
 
-        .section-wrapper-subscribe
-        {
+        .section-subscribe {
+            row-gap: 2.5rem;
 
-        .headline
-        {
-            display: grid;
-            grid-template-columns:  auto auto;
-            text-align: left;
-            column-gap: 0;
-            height: 6  rem;
-            
-            .imageContainer
-            {
-                position: relative;
-                width: 2rem;
-                height: 2rem;
+            .headline {
+                display: grid;
+                grid-template-columns: auto auto;
+                text-align: left;
+                column-gap: 0;
+                height: 4rem;
 
-                img
-                {
-                    position: absolute;
-                    left: -380%;
-                    bottom: 10%;
-                    display: block;
+                .imageContainer {
+                    position: relative;
+                    width: 2rem;
+                    height: 2rem;
+
+                    img {
+                        position: absolute;
+                        left: -380%;
+                        bottom: 10%;
+                        display: block;
+                    }
                 }
             }
-        }
 
-        .container
-        {
-            padding: 0rem;
-            grid-template-columns: auto 1fr;
-            column-gap: 6rem;
-            text-align: left;
-            align-items: start;
-
-            h3{
-
-                margin: 0rem;
-                line-height: 2.5rem;
-                display: block;
+            .container {
+                padding: 0rem;
+                grid-template-columns: auto 1fr;
+                column-gap: 6rem;
+                text-align: left;
                 align-items: start;
+
+                .checkbox-container {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    grid-template-rows: 1fr 1fr;
+                    column-gap: 4rem;
+                    margin: 0rem;
+                    height: 100%;
+                }
+
+                .form-check {
+                    margin-block: 0rem;
+                }
             }
 
-            .checkbox-container
-            {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-template-rows: 1fr 1fr;
-                column-gap: 4rem;
-                row-gap: 0.3rem;
-                padding-top: 0.4rem;
-                margin: 0rem;
-                height: 100%;  
-            }
+            .mail-container {
+                grid-template-columns: 1fr auto;
+                row-gap: 0.5rem;
+                text-align: left;
 
-            .form-check
-            {
-                margin-block: 0rem;
-            }
-        }
+                .terms {
+                    width: 100%;
+                    text-align: left;
+                    grid-column: 2span;
+                }
 
-        .mail-container
-        {
-            margin-top: 4rem;
-            grid-template-columns: 1fr auto;          
-        }
+                #invalidEmail {
+                    transform: translate(-50%, 0%);
+                }
+            }
         }
     }    
 } 

@@ -1,10 +1,16 @@
-@import '../core/_colors.scss';
+@import '../_core.scss';
 
 @media(min-width: 10px)
 {
     #sign-up {
 
+        width: 100%;
+
         .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
 
             .headlines {
                 display: flex;
@@ -21,18 +27,13 @@
                 grid-template-columns: auto;
                 grid-template-rows: auto auto;
                 padding-block: 0.5rem;
+
             }
 
             .name-box {
                 display: grid;
                 grid-template-columns: 1fr;
                 row-gap: 2rem;
-            }
-
-            span {
-                color: #EF4444;
-                font-size: 0.9rem;
-                margin-left: 0.2rem;
             }
 
             #termsspan {
@@ -55,9 +56,10 @@
 @media(min-width: 1820px)
 {
     #sign-up {
-        padding-top: 4rem;
 
         .container {
+
+            padding: 1rem;
 
             .name-box {
                 grid-template-columns: 1fr 1fr;

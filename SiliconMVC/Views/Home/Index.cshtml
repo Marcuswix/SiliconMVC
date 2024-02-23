@@ -1,4 +1,6 @@
-﻿    <section id="showcase" class="section-margin">
+﻿@model SubscribeViewModel;
+
+<section id="showcase" class="section-margin">
         <div class="container">
             <div class="content">
                 <h1 class="showcase-headline">Task Management Assistant You Gonna Love</h1>
@@ -233,7 +235,7 @@
     </section>
 
     <section id="subscribe" class="section-margin">
-        <div class="section-wrapper-subscribe">
+        <div class="section-subscribe">
             <div class="headline">
                 <h1>Don't Want to Miss Anything?</h1>
                 <div class="imageContainer">
@@ -281,10 +283,15 @@
                     </div>
                 </div>
             </div>
-            <form class="mail-container">
-                <div class="subscribeInput"><i class="fa-regular fa-envelope"></i><input placeholder="Your Email" /></div>
-                <button class="btn-theme">Subscribe *</button>
+        <form class="mail-container" method="post" novalidate asp-controller="Home" asp-action="Index" id="subscribeForm" onsubmit="subscribe(event)">
+                <div class="subscribeInput"><div class="icontainer"><i class="fa-regular fa-envelope"></i></div>
+                <input class="subscribe" asp-for="Subscribe.Email" /></div>
+                <button class="btn-theme" type="submit">Subscribe *</button>
+                <div class="terms"><p>* Yes, I agree to the <a asp-controller="" asp-action="">terms</a> and <a asp-controller="" asp-action="">privacy policy</a>.</p></div>
+                <div id="invalidEmail"><span class="" asp-validation-for="Subscribe.Email"></span></div>
             </form>
-            <p>* Yes, I agree to the <a href="">terms</a> and <a href="">privacy policy</a>.</p>
+
         </div>
     </section>
+
+@await Html.PartialAsync("_ValidationScriptPartial")
