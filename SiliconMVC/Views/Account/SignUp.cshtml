@@ -1,8 +1,13 @@
 ﻿@model SignUpViewModel;
 
+@{
+    ViewData["Title"] = "Sign up";
+}
+
 <section id="sign-up" class="">
         <div class="container">
             <form class="sign-in-form" method="post" asp-controller="Account" asp-action="SignUp" novalidate>
+            <span>@Model.ErrorMessage</span>
             <div class="headlines">
                 <h1>Create Account</h1>
                 <p>Already have an account?<a asp-controller="Account" asp-action="SignIn"> Sign in here.</a></p>

@@ -1,10 +1,8 @@
-﻿using SiliconMVC.Models;
-
+﻿using Infrastructure.Model;
 namespace SiliconMVC.ViewModels
 {
     public class SignInViewModel
     {
-        public string Titel { get; set; } = "Sign in";
         public SignInModel Form { get; set; } = new SignInModel();
         public string? ErrorMessage { get; set; }
     }

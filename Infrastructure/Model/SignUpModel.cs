@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Infrastructure.Helpers;
+using System.ComponentModel.DataAnnotations;
 
-namespace SiliconMVC.Models
+namespace Infrastructure.Model
 {
     public class SignUpModel
     {
@@ -31,31 +32,9 @@ namespace SiliconMVC.Models
         [Compare(nameof(Password), ErrorMessage = "Passwords doesn't match")]
         public string ConfirmPassword { get; set; } = null!;
 
-
         [Required]
         [Display(Name = "I Agree to the Terms & Conditions.", Order = 5)]
-        [BooleanMustBeTrue(ErrorMessage = "To sign up you must agree to our terms & conditions.")]
+        [RequiredCheckbox(ErrorMessage = "To sign up you must agree to our terms & conditions.")]
         public bool TermsAndConditions { get; set; }
     }
-
-    public class BooleanMustBeTrueAttribute : ValidationAttribute
-    {
-        public override bool IsValid(object value)
-        {
-            return value is bool b && b;
-        }
-    }
 }
-
-
-//[Display(Name = "Address", Prompt = "Enter your Address", Order = 5)]
-//[Required(ErrorMessage = "Incorrect password")]
-//public string Address { get; set; } = null!;
-
-//[Display(Name = "Postal code", Prompt = "Enter your postal code", Order = 6)]
-//[Required(ErrorMessage = "Incorrect password")]
-//public string PostalCode { get; set; } = null!;
-
-//[Display(Name = "City", Prompt = "Enter your city", Order = 7)]
-//[Required(ErrorMessage = "Invalid city")]
-//public string City { get; set; } = null!;

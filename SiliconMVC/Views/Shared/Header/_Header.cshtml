@@ -1,15 +1,15 @@
-﻿<header>
+﻿<header id="header" class="">
     <div class="container">
         <a class="logo" asp-controller="Home" asp-action="Index"><img src="~/images/solid.svg" alt="Silicon logotype"></a>
 
         <div class="menu">
             <nav>
-                @if(ViewBag.ShowChoices)
+                @if (ViewBag.ShowChoices)
                 {
                     <a class="menu-link" href="#showcase">Overview</a>
-                    <a class="menu-link" href="#features">Features</a>   
+                    <a class="menu-link" href="#features">Features</a>
                 }
-                <a class="menu-link" href="#contact.html">Contact</a>
+                <a class="menu-link" asp-controller="Contact" asp-action="Index">Contact</a>
             </nav>
         </div>
 
@@ -26,18 +26,28 @@
             <i id="hamburger" class="fa-solid fa-bars"></i>
             <div id="menu-mobil" class="mobil-menu">
                 <ul>
-                    <li><a class="menu-link" href="#showcase">Overview</a><</li>
-                    <li><a class="menu-link" href="#features">Features</a></li>
-                    <li><a asp-controller="Contact" asp-action="Index">Contact </a></li>
-                    <li><a asp-controller="Account" asp-action="SignIn">Sign in</a></li>
-                    <li><a asp-controller="Account" asp-action="SignUp">Sign Up</a></li>
+                    <a class="menu-link" asp-controller="Home" asp-action="Index">
+                    <li class="menu-link">Home</li></a>
+                    @if (ViewBag.ShowChoices)
+                    {
+                        <a class="menu-link" href="#showcase">
+                        <li class="menu-link">Overview</li></a>
+                        <a class="menu-link" href="#features">
+                        <li class="menu-link">Features</li></a>
+                    }
+                    <a class="menu-link" asp-controller="Contact" asp-action="Index">
+                    <li class="menu-link">Contact</li></a>
+                    <a class="menu-link" asp-controller="Account" asp-action="SignIn">
+                    <li class="menu-link">Sign in</li></a>
+                    <a class="menu-link" asp-controller="Account" asp-action="SignUp">
+                    <li class="menu-link">Sign Up</li></a>
                 </ul>
             </div>
         </div>
 
         <div class="account-buttons">
-            <a class="btn-gray" href="#"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
-            <a class="btn-theme" href="#"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
+            <a class="btn-gray" asp-controller="Account" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
+            <a class="btn-theme" asp-controller="Account" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
         </div>
     </div>
 </header>

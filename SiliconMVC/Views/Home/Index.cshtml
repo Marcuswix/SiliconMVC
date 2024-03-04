@@ -1,5 +1,15 @@
-﻿@model SubscribeViewModel;
+﻿@inject FeatureService _featureService
+@inject IntegrateService _integrateService
 
+@{
+    var result = await _featureService.GetAllFeatures();
+    List<FeatureEntity> feature = (List<FeatureEntity>)result.ContentResult!;
+    var content = feature.First();
+}
+
+@model SubscribeViewModel;
+
+@* Section "ShowCase" *@
 <section id="showcase" class="section-margin">
         <div class="container">
             <div class="content">
@@ -24,57 +34,29 @@
         </div>
     </section>
 
+@* Section "Features" *@
     <section id="features" class="section-margin">
         <div class="container">
-            <h1>What Do You Get with Our Tool?</h1>
-            <p>Make sure all your tasks are organized so you can set the priorities and focus on important.</p>
+            <h1>@content.Title</h1>
+            <p>@content.Ingress</p>
+
             <div class="tool-features">
-                <a href="#">
-                    <div class="box" id="box1">
-                        <img src="~/images/icons/chat.svg" alt="A speech bubble">
-                        <h5>Comments on Tasks</h5>
-                        <p>Id mollis consectetur congue egestas egestas suspendisse blandit justo.</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="box" id="box2">
-                        <img src="~/images/icons/presentation.svg" alt="A Monitor">
-                        <h5>Tasks Analytics</h5>
-                        <p>Non imperdiet facilisis nulla tellus Morbi scelerisque eget adipiscing vulputate.</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="box" id="box3">
-                        <img src="~/images/icons/add-group.svg" alt="A plus sign with two people">
-                        <h5>Multiple Assignees</h5>
-                        <p>A elementum, imperdiet enim, pretium etiam facilisi in aenean quam mauris.</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="box" id="box4">
-                        <img src="~/images/icons/bell.svg" alt="A bell ringing">
-                        <h5>Notifications</h5>
-                        <p>Diam, suspendisse velit cras ac. Lobortis diam volutpat, eget pellentesque viverra.</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="box" id="box5">
-                        <img src="~/images/icons/test.svg" alt="Tasked checked">
-                        <h5>Sections & Subtasks</h5>
-                        <p>Mi feugiat hac id in. Sit elit placerat lacus nibh lorem ridiculus lectus.</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="box" id="box6">
-                        <img src="~/images/icons/shield.svg" alt="A shield">
-                        <h5>Data Security</h5>
-                        <p>Aliquam malesuada neque eget elit nulla vestibulum nunc cras.</p>
-                    </div>
-                </a>
+
+                @foreach(var item in content.FeatureItems)
+                {
+                    <a href="#">
+                        <div class="box" id="box1">
+                            <img src="~/images/icons/@item.ImageUrl" alt="@item.AltText">
+                            <h5>@item.Title</h5>
+                            <p>@item.Text</p>
+                        </div>
+                    </a>
+                }
             </div>
         </div>
     </section>
 
+@* Section "LightDark" *@
     <section id="lightDark" class="section-margin">
         <div class="textContainer">
             <div class="dark">
@@ -138,6 +120,7 @@
         </div>
     </section>
 
+@* Section "Download" *@
     <section id="download" class="section-margin">
         <wrapper class="section-wrapper">
             <div class="imageContainer">
@@ -185,51 +168,27 @@
         </wrapper>
     </section>
 
+@{
+    var resultIntegrate = await _integrateService.GetAllIntegrate();
+    List<IntegrateEntity> integrate = (List<IntegrateEntity>)resultIntegrate.ContentResult!;
+    var contentIntegrate = integrate.First();
+}
+
     <section id="integrate" class="section-margin">
         <wrapper class="section-wrapper-integrate">
             <div class="headlinesIntegrate">
-                <h1>Integrate Top Work Tools</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat mollis egestas. Nam luctus facilisis ultrices. Pellentesque volutpat ligula est. Mattis fermentum, at nec lacus.</p>
+                <h1>@contentIntegrate.Title</h1>
+                <p>@contentIntegrate.Ingress</p>
             </div>
             <div class="box-container">
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/google.svg" alt="Google icon" />
-                    <p>Lorem magnis pretium sed curabitur nunc facilisi nunc cursus sagittis.</p>
 
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/zoom.svg" alt="Zoom icon" />
-                    <p>In eget a mauris quis. Tortor dui tempus quis integer est sit natoque placerat dolor.</p>
-
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/slack.svg" alt="Slack icon" />
-                    <p>Id mollis consectetur congue egestas egestas suspendisse blandit justo.</p>
-
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/gmail.svg" alt="Gmail icon" />
-                    <p>Rutrum interdum tortor, sed at nulla. A cursus bibendum elit purus cras praesent.</p>
-
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/trello.svg" alt="Trello icon" />
-                    <p>A elementum, imperdiet enim, pretium etiam facilisi in aenean quam mauris.</p>
-
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/mailChimp.svg" alt="MailChimp icon" />
-                    <p>Lorem magnis pretium sed curabitur nunc facilisi nunc cursus sagittis.</p>
-
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/dropbox.svg" alt="Dropbox icon" />
-                    <p>Lorem magnis pretium sed curabitur nunc facilisi nunc cursus sagittis.</p>
-                </div>
-                <div class="box-integrate">
-                    <img src="~/images/iconsbrands/evernote.svg" alt="Evernote icon" />
-                    <p>Lorem magnis pretium sed curabitur nunc facilisi nunc cursus sagittis.</p>
-                </div>
+                @foreach(var item in contentIntegrate.IntegrateItems)
+                {
+                    <div class="box-integrate">
+                        <img src="~/images/iconsbrands/@item.ImageUrl" alt="@item.AltText" />
+                        <p>@item.Text</p>
+                    </div>
+                }
             </div>
         </wrapper>
     </section>
@@ -283,7 +242,7 @@
                     </div>
                 </div>
             </div>
-        <form class="mail-container" method="post" novalidate asp-controller="Home" asp-action="Index" id="subscribeForm" onsubmit="subscribe(event)">
+            <form class="mail-container" method="post" novalidate asp-controller="Home" asp-action="Index" id="subscribeForm" onsubmit="subscribe(event)">
                 <div class="subscribeInput"><div class="icontainer"><i class="fa-regular fa-envelope"></i></div>
                 <input class="subscribe" asp-for="Subscribe.Email" /></div>
                 <button class="btn-theme" type="submit">Subscribe *</button>

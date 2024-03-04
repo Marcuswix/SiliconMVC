@@ -2,25 +2,26 @@
 
 @media(min-width:10px)
 {
-    #footer 
-    {
+    #footer {
         display: block;
         margin: auto;
         @include text-m;
         color: $gray-600;
-    
-        .container 
-        {
+
+        .container {
             text-align: center;
             margin-block: 2rem;
-    
-            .social-media 
-            {
+
+            .social-media {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 gap: 20px;
                 margin-bottom: 30px;
+            }
+
+            span {
+                display: none;
             }
         }
     }
@@ -30,10 +31,14 @@
 {
     #footer 
     {
-    
         .container 
         {
             margin-block: 3rem;
+
+            span
+            {
+                display: contents;
+            }
         }
     }
 }

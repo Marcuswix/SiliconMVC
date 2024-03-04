@@ -1,4 +1,4 @@
-﻿using SiliconMVC.Models;
+﻿using Infrastructure.Model;
 
 namespace SiliconMVC.ViewModels
 {
@@ -6,12 +6,7 @@ namespace SiliconMVC.ViewModels
     {
         public string Title { get; set; } = "Account Details";
 
-        public AccountDetailsModel BasicInfo { get; set; } = new AccountDetailsModel()
-        {
-            FirstName = "Hans",
-            LastName = "Mattin-Lassie",
-            Email = "domaim@soman.se",
-        };
+        public AccountDetailsModel BasicInfo { get; set; } = new AccountDetailsModel();
 
         public AccountDertailsAddressModel AddressInfo { get; set; } = new AccountDertailsAddressModel();
     }

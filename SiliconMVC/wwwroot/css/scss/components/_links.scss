@@ -13,17 +13,21 @@ a {
 .menu-link {
     @include text-nav;
     text-decoration: none;
-    transition: color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, transform 0.15s ease-in-out;
 
-    &:hover
-    {
-        color: $theme;
-        text-decoration: underline;
+    &:hover {
+        text-decoration: none;
+        text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+
+        background-color: #5178F8;
+        
+        a {
+            transform: scale(1.1);
+        }
     }
 
     &:active,
     &:focus,
-    
     .active {
         color: $theme;
         text-decoration: none;
