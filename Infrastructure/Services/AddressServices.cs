@@ -55,20 +55,21 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<RepositoriesResult> GetAllAddresses()
+        public async Task<AddressEntity> GetOneAddresses(UserEntity entity)
         {
             try
             {
-                var result = await _repository.GetAllAsync();
+                var result = await _repository.GetOneAsync(entity);
+                
                 if (result != null)
                 {
                     return result;
                 }
 
-                return ResponseFactory.NotFound("The list is Empty");
+                return null!;
             }
             catch (Exception ex) { Debug.WriteLine("CreateUser" + ex.Message);
-            return ResponseFactory.Error();
+            return null!;
             }
         }
     }

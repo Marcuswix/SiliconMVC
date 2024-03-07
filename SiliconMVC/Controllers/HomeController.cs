@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SiliconMVC.ViewModels;
+using Infrastructure.ViewModels;
 
-namespace SiliconMVC.Controllers;
+namespace Infrastructure.Controllers;
 
 public class HomeController : Controller
 {

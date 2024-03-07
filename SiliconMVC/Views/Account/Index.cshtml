@@ -1,9 +1,7 @@
-﻿@using System.Security.Claims
-
-@model AccountDetailsViewModel;
+﻿@model AccountDetailsViewModel;
 
 @{
-    ViewData["Title"] = "My Account ";
+    ViewData["Title"] = "My Account";
 }
 
 <section id="account" class="container">
@@ -16,11 +14,11 @@
                         </svg>
                     </div>
                 </button>
-                <img src="~/images/avatar.png" alt="@User.Identity.Name"/>
+                <img src="~/images/avatar.png" alt="")/>
             </div>
 
-        <h5>@User.Identity.Name</h5>
-            <p>@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</p>
+        <h5>@($"{Model.User.FirstName} {Model.User.LastName}")</h5>
+            <p>@Model.User.Email</p>
             <button class="btn-theme-s" asp-controller="Account" asp-action="Index">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9.99984 13.3334C11.8382 13.3334 13.3332 11.8384 13.3332 10.0001C13.3332 8.16175 11.8382 6.66675 9.99984 6.66675C8.1615 6.66675 6.6665 8.16175 6.6665 10.0001C6.6665 11.8384 8.1615 13.3334 9.99984 13.3334ZM9.99984 8.33341C10.9032 8.33341 11.6665 9.09675 11.6665 10.0001C11.6665 10.9034 10.9032 11.6667 9.99984 11.6667C9.0965 11.6667 8.33317 10.9034 8.33317 10.0001C8.33317 9.09675 9.0965 8.33341 9.99984 8.33341Z" fill="white" />
@@ -28,6 +26,15 @@
                 </svg>
                 Account Details
             </button>
+            <a class="btn-transparent" asp-controller="Account" asp-action="">
+                <i class="fa-solid fa-lock"></i><b>Security</b>
+            </a>
+            <a class="btn-transparent" asp-controller="Account" asp-action="">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.0002 1.66675H5.00016C4.081 1.66675 3.3335 2.41425 3.3335 3.33341V7.73008V8.33342V18.3334L10.0002 14.5234L16.6668 18.3334V8.33342V7.73008V3.33341C16.6668 2.41425 15.9193 1.66675 15.0002 1.66675ZM15.0002 15.4609L10.0002 12.6042L5.00016 15.4609V8.33342V7.73008V3.33341H15.0002V7.73008V8.33342V15.4609Z" fill="#9397AD" />
+                </svg>
+                <b>Saved Courses</b>
+            </a>
             <a class="btn-transparent" asp-controller="Account" asp-action="SignOut">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.3332 10.8334V9.16675H5.83317V6.66675L1.6665 10.0001L5.83317 13.3334V10.8334H13.3332Z" fill="#9397AD" />
@@ -42,35 +49,39 @@
         <div class="containerAccount">
             <div class="headlines">
                 <h2>Account Details</h2>
+                <div class="basicInfo">
                 <h5>Basic Info</h5>
+                <span>@Model.SuccessErrorMessage</span>
+                </div>
             </div>
-        <form class="sign-in-form" asp-controller="Account" asp-action="Update" method="post" novalidate>
+        <form class="sign-in-form" id="basicInfoForm" asp-controller="Account" asp-action="SaveBasicInfo" method="post" novalidate>
                 <div id="boxFirstName">
-                    <label><b>First name</b></label>
+                    <label asp-for="BasicInfo.FirstName"><b>First name</b></label>
                     <span asp-validation-for="BasicInfo.FirstName"></span>
-                <input asp-for="BasicInfo.FirstName" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value)" />
+                <input asp-for="@Model.BasicInfo.FirstName" value="@Model.User.FirstName" />
 
                 </div>
                 <div id="boxLastName">
-                    <label><b>Last name</b></label>
+                    <label asp-for="BasicInfo.LastName"><b>Last name</b></label>
                     <span asp-validation-for="BasicInfo.LastName"></span>
-                <input asp-for="BasicInfo.LastName" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value)" />
+                <input asp-for="@Model.BasicInfo.LastName" value="@Model.User.LastName" />
                 </div>
 
                 <div id="boxEmail">
-                    <label><b>Email</b></label>
+                    <label asp-for="BasicInfo.Email"><b>Email</b></label>
                     <span asp-validation-for="BasicInfo.Email"></span>
-                <input asp-for="BasicInfo.Email" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value)" />
+                <input asp-for="@Model.BasicInfo.Email" value="@Model.User.Email" />
                 </div>
                 <div id="boxPhone">
-                    <label><b>Phone</b></label>
+                <label asp-for="BasicInfo.Phone"><b>Phone<span class="grey-color">(optional)</span></b></label>
                     <span asp-validation-for="BasicInfo.Phone"></span>
-                <input asp-for="BasicInfo.Phone" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.MobilePhone)?.Value)"  />
+                <input asp-for="@Model.BasicInfo.Phone" value="@Model.User.PhoneNumber" />
                 </div>
                 <div id="boxBio">
-                    <label class="bio"><b>Bio<span class="grey-color">(optional)</span> </b></label>
-                <textarea class="inputArea" asp-for="BasicInfo.Biography" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData)?.Value)">
-                    </textarea>
+                <label class="bio"><b>Bio<span class="grey-color">(optional)</span></b></label>
+                <textarea class="inputArea" asp-for="@Model.BasicInfo.Biography">
+                @Model.User.Biography
+                </textarea>
                 </div>
                 <div class="save-cancel">
                     <button class="btn-gray" type="reset">Cancel</button>
@@ -81,28 +92,32 @@
             <hr>
 
             <div>
+                <div class="basicInfo">
                 <h5>Address</h5>
-                <form class="sign-in-form" asp-controller="Account" asp-action="AddressInfo" method="post" novalidate>
+                <span>@Model.SuccessErrorMessage</span>
+                </div>
+
+                <form class="sign-in-form" id="AddressForm" asp-controller="Account" asp-action="SaveAddressInfo" method="post" novalidate>
 
                     <div id="boxAddress">
                         <label><b>Address line 1</b></label>
                         <span asp-validation-for="AddressInfo.Address"></span>
-                    <input asp-for="AddressInfo.Address" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.StreetAddress)?.Value)"  />
+                    <input asp-for="@Model.AddressInfo.Address" value="@Model.AddressInfo.Address" />
                     </div>
                     <div id="boxAddress2">
                         <label><b>Address line 2 <b class="grey-color"> (optional)</b></b></label>
                         <span asp-validation-for="AddressInfo.Address2"></span>
-                    <input asp-for="AddressInfo.Address2" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.StreetAddress)?.Value)" />
+                    <input asp-for="@Model.AddressInfo.Address2" value="@Model.AddressInfo.Address2" />
                     </div>
                     <div id="boxPostalCode">
                         <label><b>Postal code</b></label>
                         <span asp-validation-for="AddressInfo.PostalCode"></span>
-                    <input asp-for="AddressInfo.PostalCode" value="@(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PostalCode)?.Value)"  />
+                    <input asp-for="@Model.AddressInfo.PostalCode" value="@Model.AddressInfo.PostalCode" />
                     </div>
                     <div id="boxCity">
                         <label><b>City</b></label>
                         <span asp-validation-for="AddressInfo.City"></span>
-                    <input asp-for="AddressInfo.City" value="@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Country)?.Value" />
+                    <input asp-for="@Model.AddressInfo.City" value="@Model.AddressInfo.City" />
                     </div>
                     <div class="save-cancel">
                     <button class="btn-gray" type="reset">Cancel</button>

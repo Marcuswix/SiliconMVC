@@ -7,10 +7,11 @@ using System.Diagnostics;
 
 namespace Infrastructure.Repositories
 {
-    public class IntegrateRepository : BaseRepository<IntegrateEntity>
+    public class IntegrateRepository : BaseRepositoriesPopulateWebbInfo<IntegrateEntity>
     {
         private readonly DataContext _context;
-        public IntegrateRepository(DataContext dataContext, DataContext context) : base(dataContext)
+
+        public IntegrateRepository(DataContext context) : base(context)
         {
             _context = context;
         }

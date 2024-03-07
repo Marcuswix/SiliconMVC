@@ -120,6 +120,16 @@ header {
         .open {
             left: 0 !important;
         }
+
+        .image-container {
+            height: auto;
+            width: auto;
+
+            .profil-image {
+                height: 42px;
+                width: auto;
+            }
+        }
     }
 
     @media(max-width: 720px) {

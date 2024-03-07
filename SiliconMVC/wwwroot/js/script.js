@@ -54,6 +54,7 @@ function showHideMessage() {
     if (contactForm.classList.contains("hideForm")) {
         contactForm.classList.remove("hideForm")
         applicationForm.classList.add("hideForm")
+
     }
     else {
         contactForm.classList.add("hideForm")
@@ -75,11 +76,6 @@ function showHideApplication() {
 function hideMessage() {
     contactForm.classList.add("hideForm")
     applicationForm.classList.add("hideForm")
-}
-
-function subscribe(event)
-{
-    event.preventDefault();
 }
 
 

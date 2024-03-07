@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SiliconMVC.Models
+namespace Infrastructure.Models
 {
     public class SubscribeModel
     {

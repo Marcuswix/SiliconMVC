@@ -5,8 +5,8 @@ namespace Infrastructure.Model
 {
     public class UserModel
     {
-        [Key]
-        public string Id { get; set; } = null!; 
+        //[Key]
+        //public string Id { get; set; } = null!; 
 
         [StringLength(100)]
         public string FirstName { get; set; } = null!;
@@ -17,6 +17,8 @@ namespace Infrastructure.Model
         [Required]
         [StringLength(100)]
         public string Email { get; set; } = null!;
+
+        public string? UrlImage { get; set; } = null!;
 
         public string? Phone { get; set; } = null!;
 

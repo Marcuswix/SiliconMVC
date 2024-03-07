@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.User
 {
-    [DbContext(typeof(DataContext))]
-    [Migration("20240304135256_UserAdded")]
-    partial class UserAdded
+    [DbContext(typeof(UserContext))]
+    [Migration("20240307133606_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,117 +48,13 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("StreetName2")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.FeatureEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ingress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Features");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.FeatureItemEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AltText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FeatureId");
-
-                    b.ToTable("FeatureItems");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.IntegrateEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ingress")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Integrate");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.IntegrateItemEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AltText")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Headline")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("IntegrateId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IntegrateId");
-
-                    b.ToTable("IntegrateItem");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.UserEntity", b =>
@@ -384,33 +280,12 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Entities.FeatureItemEntity", b =>
-                {
-                    b.HasOne("Infrastructure.Entities.FeatureEntity", "Feature")
-                        .WithMany("FeatureItems")
-                        .HasForeignKey("FeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Feature");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.IntegrateItemEntity", b =>
-                {
-                    b.HasOne("Infrastructure.Entities.IntegrateEntity", "Integrate")
-                        .WithMany("IntegrateItems")
-                        .HasForeignKey("IntegrateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Integrate");
-                });
-
             modelBuilder.Entity("Infrastructure.Entities.UserEntity", b =>
                 {
                     b.HasOne("Infrastructure.Entities.AddressEntity", "Address")
                         .WithMany("Users")
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Address");
                 });
@@ -469,16 +344,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Entities.AddressEntity", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.FeatureEntity", b =>
-                {
-                    b.Navigation("FeatureItems");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.IntegrateEntity", b =>
-                {
-                    b.Navigation("IntegrateItems");
                 });
 #pragma warning restore 612, 618
         }

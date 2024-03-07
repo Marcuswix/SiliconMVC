@@ -4,13 +4,11 @@ using Infrastructure.Entities;
 
 namespace Infrastructure.Contexts
 {
-    public class DataContext : IdentityDbContext<UserEntity>
+    public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-
-        public DbSet<AddressEntity> Addresses { get; set; }
 
         public DbSet<FeatureEntity> Features { get; set; }
 

@@ -7,13 +7,13 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
-    public abstract class BaseRepository<TEntity> where TEntity : class
+    public abstract class BaseRepositoriesPopulateWebbInfo<TEntity> where TEntity : class
     {
-        private readonly UserContext _userContext;
+        private readonly DataContext _dataContext;
 
-        protected BaseRepository(UserContext userContext)
+        protected BaseRepositoriesPopulateWebbInfo(DataContext dataContext)
         {
-            _userContext = userContext;
+            _dataContext = dataContext;
         }
 
         //CRUD - SOLID (Ska bara göra en sak)
@@ -22,13 +22,15 @@ namespace Infrastructure.Repositories
         //virtual = går att ändra på, async = att den ska inväntas, Task<???> = detta är vad den ska skicka tillbaka, och det i parentesen är vad den tar med sig in... 
         public virtual async Task<RepositoriesResult> CreateOneAsync(TEntity entity)
         {
-            try 
+            try
             {
-                await _userContext.Set<TEntity>().AddAsync(entity);
-                await _userContext.SaveChangesAsync();
+                await _dataContext.Set<TEntity>().AddAsync(entity);
+                await _dataContext.SaveChangesAsync();
                 return ResponseFactory.Ok(entity);
             }
-            catch (Exception ex) {Debug.WriteLine("CreateOneAsync" + ex.Message);
+            catch (Exception ex)
+            {
+                Debug.WriteLine("CreateOneAsync" + ex.Message);
                 return ResponseFactory.Error(ex.Message);
             }
         }
@@ -38,7 +40,7 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var list = await _userContext.Set<TEntity>().ToListAsync();
+                var list = await _dataContext.Set<TEntity>().ToListAsync();
                 return ResponseFactory.Ok(list);
             }
             catch (Exception ex)
@@ -52,7 +54,7 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var entityToGet = await _userContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+                var entityToGet = await _dataContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
 
                 if (entityToGet == null)
                 {
@@ -75,14 +77,14 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var entityToUpdate = await _userContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+                var entityToUpdate = await _dataContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
 
                 if (entityToUpdate != null)
                 {
                     // Uppdatera alla egenskaper utom Id
-                    _userContext.Entry(entityToUpdate).CurrentValues.SetValues(updatedEntity);
+                    _dataContext.Entry(entityToUpdate).CurrentValues.SetValues(updatedEntity);
 
-                    await _userContext.SaveChangesAsync();
+                    await _dataContext.SaveChangesAsync();
                 }
 
                 return ResponseFactory.Error();
@@ -98,13 +100,13 @@ namespace Infrastructure.Repositories
         public virtual async Task<RepositoriesResult> DeleteOneAsync(Expression<Func<TEntity, bool>> predicate, int id)
         {
             try
-            {   
-                var result = await _userContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+            {
+                var result = await _dataContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
 
-                if(result != null)
+                if (result != null)
                 {
-                    _userContext.Set<TEntity>().Remove(result);
-                    await _userContext.SaveChangesAsync();
+                    _dataContext.Set<TEntity>().Remove(result);
+                    await _dataContext.SaveChangesAsync();
                     return ResponseFactory.Ok("Successfully Removed");
                 }
 
@@ -122,9 +124,9 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var result = await _userContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+                var result = await _dataContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
 
-                if(result == null)
+                if (result == null)
                 {
                     return ResponseFactory.NotFound();
                 }

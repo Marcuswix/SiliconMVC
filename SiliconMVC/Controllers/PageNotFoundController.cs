@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SiliconMVC.Controllers
+namespace Infrastructure.Controllers
 {
     public class PageNotFoundController : Controller
     {

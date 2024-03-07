@@ -16,7 +16,7 @@ namespace Infrastructure.Entities
         public string LastName { get; set; } = null!;
 
         [StringLength(1000)]
-        public string? Biography { get; set; } = null!;
+        public string? Biography { get; set; }
 
         public DateTime? Created { get; set; }
 

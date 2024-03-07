@@ -5,8 +5,11 @@ namespace Infrastructure.Model
 {
     public class AccountDetailsModel
     {
+        [Key]
+        public string Id { get; set; } = null!;
+
         [DataType(DataType.ImageUrl)]
-        public string? ProfileImage { get; set; } = null!; 
+        public string? ProfileImage { get; set; }
 
         [Display(Name = "First name", Prompt = "Enter your first name", Order = 0)]
         [Required(ErrorMessage = "Invalid first name")]
@@ -22,12 +25,13 @@ namespace Infrastructure.Model
         [RegularExpression("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid Email")]
         public string Email { get; set; } = null!;
 
-        [Display(Name = "Phone", Prompt = "Enter your phone number", Order = 3)]
+        [Display(Name = "Phone (Optional)", Prompt = "Enter your phone number", Order = 3)]
         [Required(ErrorMessage = "Invalid phone number")]
         [DataType(DataType.PhoneNumber)]
-        public string Phone { get; set; } = null!;
+        public string? Phone { get; set; }
 
         [Display(Name = "Bio", Prompt = "Add a short bio...", Order = 4)]
+        [DataType(DataType.MultilineText)]
         public string? Biography { get; set; }
     }
 }

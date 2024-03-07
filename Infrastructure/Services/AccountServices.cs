@@ -15,7 +15,6 @@ namespace Infrastructure.Services
             _userRepository = userRepository;
         }
 
-
         public async Task<RepositoriesResult> GetUserInformation(UserModel model)
         {
             try

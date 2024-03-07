@@ -27,8 +27,8 @@ namespace Infrastructure.Model
         public string Password { get; set; } = null!;
 
         [Display(Name = "Confrim password", Prompt = "Confirm your password", Order = 4)]
-        [DataType(DataType.Password)]
         [Required(ErrorMessage = "You must confirm your password")]
+        [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage = "Passwords doesn't match")]
         public string ConfirmPassword { get; set; } = null!;
 

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class FeatureRepository(DataContext dataContext) : BaseRepository<FeatureEntity>(dataContext)
+    public class FeatureRepository(DataContext dataContext) : BaseRepositoriesPopulateWebbInfo<FeatureEntity>(dataContext)
     {
         private readonly DataContext _dataContext = dataContext;
 

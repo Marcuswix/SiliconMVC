@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Model;
 
-namespace SiliconMVC.ViewModels
+namespace Infrastructure.ViewModels
 {
     public class SignUpViewModel
     {

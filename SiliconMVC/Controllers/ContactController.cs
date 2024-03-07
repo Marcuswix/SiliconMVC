@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SiliconMVC.ViewModels;
+using Infrastructure.ViewModels;
 using System.Reflection;
 
-namespace SiliconMVC.Controllers
+namespace Infrastructure.Controllers
 {
     public class ContactController : Controller
     {
@@ -16,18 +16,21 @@ namespace SiliconMVC.Controllers
         }
 
 
+        
         [HttpPost]
         [Route("/contact")]
         public IActionResult Index(MessageViewModel viewModel)
         {
             ViewBag.ShowDiv = true;
+            ViewBag.ShowChoices = false;
             ViewData["Title"] = "Contact";
 
             if (ModelState.IsValid)
             {
-
-            }
                 return View();
+            }
+
+            return View();
         }
     }
 }

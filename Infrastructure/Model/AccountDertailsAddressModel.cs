@@ -9,7 +9,7 @@ namespace Infrastructure.Model
         public string Address { get; set; } = null!;
 
         [Display(Name = "Address2", Prompt = "Enter your second address line", Order = 1)]
-        public string? Address2 { get; set; } = null!;
+        public string? Address2 { get; set; }
 
         [Display(Name = "Postal code", Prompt = "Enter your postal code", Order = 2)]
         [Required(ErrorMessage = "A postal code i required")]

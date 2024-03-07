@@ -1,10 +1,12 @@
 using Infrastructure.Contexts;
 using Infrastructure.Entities;
+using Infrastructure.Helpers.Middlewers;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace SiliconMVC
+namespace Infrastructure
 {
     public class Program
     {
@@ -13,13 +15,12 @@ namespace SiliconMVC
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-            builder.Services.AddDefaultIdentity<UserEntity>(x =>
-             {
-                 x.User.RequireUniqueEmail = true;
-                 x.SignIn.RequireConfirmedAccount = false;
-                 x.Password.RequiredLength = 8;
-             }).AddEntityFrameworkStores<DataContext>();
+
+            builder.Services.AddDbContext<DataContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")), contextLifetime: ServiceLifetime.Transient);
+
+            builder.Services.AddDbContext<UserContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("UserServer")), contextLifetime: ServiceLifetime.Transient);
 
             builder.Services.AddScoped<AddressRepository>();
             builder.Services.AddScoped<AddressEntity>();
@@ -34,24 +35,43 @@ namespace SiliconMVC
             builder.Services.AddScoped<IntegrateItemRepository>();
             builder.Services.AddScoped<IntegrateService>();
             builder.Services.AddScoped<AccountServices>();
+            builder.Services.AddScoped<AddressServices>();
+            builder.Services.AddScoped<AddressRepository>();
+            builder.Services.AddScoped<UserManager<UserEntity>>();
+            builder.Services.AddScoped<SignInManager<UserEntity>>();
 
-            builder.Services.AddAuthentication("AuthCookie").AddCookie("AuthCookie", x =>
+            builder.Services.AddDefaultIdentity<UserEntity>(x =>
+             {
+                 x.User.RequireUniqueEmail = true;
+                 x.SignIn.RequireConfirmedAccount = false;
+                 x.Password.RequiredLength = 8;
+             }).AddEntityFrameworkStores<UserContext>();
+
+            builder.Services.ConfigureApplicationCookie(x =>
             {
-            x.LoginPath = "/signin";
-            x.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                //Detta förhindrar att någon kan läsa ut cookieinformationen
+                x.Cookie.HttpOnly = true;
+                x.LoginPath = "/signin";
+                x.LogoutPath = "/signout";
+                x.AccessDeniedPath = "/denied";
+                x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                //Användaren loggar ut automatisk efter 30 min...
+                x.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                //Denna del gör så att ExpireTime nollställ så for en sida laddas om...
+                x.SlidingExpiration = true;
             });
-
 
             var app = builder.Build();
 
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
-            //app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
+            app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseAuthentication(); //Vem är du?
+            app.UseUserSessionValidation();
+            //app.UseAuthentication(); //Vem är du?
             app.UseAuthorization(); // Vad får du göra?
 
             app.MapControllerRoute(

@@ -9,15 +9,20 @@ using System.Net;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository(DataContext dataContext) : BaseRepository<UserEntity>(dataContext)
+    public class UserRepository : BaseRepository<UserEntity>
     {
-        private readonly DataContext _dataContext = dataContext;
+        private readonly UserContext _userContext;
+
+        public UserRepository(UserContext userContext) : base(userContext)
+        {
+            _userContext = userContext;
+        }
 
         public override async Task<RepositoriesResult> GetAllAsync()
         {
             try
             {
-                var result = await _dataContext.Users
+                var result = await _userContext.Users
                     .Include(x => x.Address)
                     .ToListAsync();
 
@@ -38,7 +43,7 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+                var result = await _userContext.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
 
                 if (result != null)
                 {
@@ -58,7 +63,7 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+                var result = await _userContext.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
 
                 if (result != null)
                 {

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Infrastructure.Entities;
 using Infrastructure.Factories;
 using Infrastructure.Helpers;
+using Infrastructure.ViewModels;
 
 namespace Infrastructure.Services
 {
@@ -76,7 +77,6 @@ namespace Infrastructure.Services
 
                             return new UserModel
                             {
-                                Id = userEntity.Id,
                                 FirstName = userEntity.FirstName,
                                 LastName = userEntity.LastName,
                                 Email = userEntity.Email,
@@ -95,21 +95,22 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<RepositoriesResult> UpdateUserInfo(UserModel model)
+        public async Task<RepositoriesResult> UpdateUserInfo(AccountDetailsModel model)
         {
             try
             {
                 if (model != null)
                 {
-                    var entityUpdate = new UserEntity
+                    var dataToUpdate = new UserEntity
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Email = model.Email,
-                        Biography = model.Biography ?? string.Empty,
+                        PhoneNumber = model.Phone,
+                        Biography = model.Biography,
                     };
 
-                    var result = await _repository.UpdateOneAsync(x => x.Email == model.Email, entityUpdate);
+                    var result = await _repository.UpdateOneAsync(x => x.Email == model.Email, dataToUpdate);
 
                     if (result.StatusCode == StatusCodes.OK) 
                     {

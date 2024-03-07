@@ -1,4 +1,7 @@
-﻿<header id="header" class="">
+﻿@model AccountDetailsViewModel;
+@inject SignInManager<UserEntity> _signInManager
+
+<header id="header" class="">
     <div class="container">
         <a class="logo" asp-controller="Home" asp-action="Index"><img src="~/images/solid.svg" alt="Silicon logotype"></a>
 
@@ -10,6 +13,10 @@
                     <a class="menu-link" href="#features">Features</a>
                 }
                 <a class="menu-link" asp-controller="Contact" asp-action="Index">Contact</a>
+                @if (_signInManager.IsSignedIn(User))
+                {
+                    <a class="menu-link" asp-controller="" asp-action="">Courses</a>
+                }
             </nav>
         </div>
 
@@ -37,17 +44,40 @@
                     }
                     <a class="menu-link" asp-controller="Contact" asp-action="Index">
                     <li class="menu-link">Contact</li></a>
-                    <a class="menu-link" asp-controller="Account" asp-action="SignIn">
-                    <li class="menu-link">Sign in</li></a>
-                    <a class="menu-link" asp-controller="Account" asp-action="SignUp">
-                    <li class="menu-link">Sign Up</li></a>
+
+                    @if (_signInManager.IsSignedIn(User))
+                    {
+                        <a class="menu-link" asp-controller="" asp-action="">
+                        <li class="menu-link">My Courses</li></a>
+                        
+                        <a class="menu-link" asp-controller="Account" asp-action="Index">
+                        <li class="menu-link">My Account</li></a>
+
+                        <a class="menu-link" asp-controller="Account" asp-action="SignOut">
+                        <li class="menu-link">Sign Out</li></a>
+                    }
+                    else
+                    {
+                        <a class="menu-link" asp-controller="Account" asp-action="SignIn">
+                        <li class="menu-link">Sign in</li></a>
+                        <a class="menu-link" asp-controller="Account" asp-action="SignUp">
+                        <li class="menu-link">Sign Up</li></a>
+                    }
+
                 </ul>
             </div>
         </div>
 
         <div class="account-buttons">
-            <a class="btn-gray" asp-controller="Account" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
-            <a class="btn-theme" asp-controller="Account" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
+            @if (_signInManager.IsSignedIn(User))
+            {
+                <a asp-controller="account" asp-action="Index"><div class="image-container"><img class="profil-image" src="~/images/avatar.png" alt="@User.Identity.Name"/></div></a>
+            }
+            else
+            {
+                <a class="btn-gray" asp-controller="Account" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
+                <a class="btn-theme" asp-controller="Account" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
+            }
         </div>
     </div>
 </header>

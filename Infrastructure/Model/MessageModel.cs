@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SiliconMVC.Models
+namespace Infrastructure.Models
 {
     public class MessageModel
     {
@@ -15,7 +15,7 @@ namespace SiliconMVC.Models
 
         [Display(Name = "Subject", Order = 2)]
         [Required(ErrorMessage = "Choose the service you interested in")]
-        public string? Subject { get; set; } = null!;
+        public string? Subject { get; set; }
 
         [Display(Name = "Message", Prompt = "Enter you message here...", Order = 3)]
         [Required(ErrorMessage = "You must enter a message")]

@@ -1,21 +1,30 @@
 ﻿using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
-using SiliconMVC.ViewModels;
+using Infrastructure.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Infrastructure.Model;
 
-namespace SiliconMVC.Controllers
+namespace Infrastructure.Controllers
 {
     public class AccountController : Controller
     {
         private readonly UserServices _userServices;
-        private readonly AccountServices _accountServices;
+        private readonly SignInManager<UserEntity> _signInManager;
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly AddressServices _addressServices;
 
-        public AccountController(UserServices userServices, AccountServices accountServices)
+        public AccountController(UserServices userServices, SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, AddressServices addressServices)
         {
             _userServices = userServices;
-            _accountServices = accountServices;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _addressServices = addressServices;
         }
 
         private void SetDefaultViewValues()
@@ -24,93 +33,140 @@ namespace SiliconMVC.Controllers
             ViewBag.ShowChoices = false;
         }
 
+        //INDEX
         [Authorize]
-        [Route("/account")]
         [HttpGet]
-        public IActionResult Index()
+        [Route("/account")]
+        public async Task<IActionResult> Index()
         {
-            var viewModel = new AccountDetailsViewModel();
             ViewBag.ShowDiv = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
-            //viewModel.AddressInfo = _accountService.GetAddressInfo(); 
+
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("SigIn", "Account");
+            }
+
+            var userEntity = await _userManager.GetUserAsync(User);
+            var addressEntity = await _addressServices.GetOneAddresses(userEntity);
+
+            var addressModel = new AccountDertailsAddressModel();
+
+                if (addressEntity != null!)
+                {
+                    addressModel.Address = addressEntity.StreetName;
+                    addressModel.Address2 = addressEntity.StreetName2;
+                    addressModel.PostalCode = addressEntity.PostalCode;
+                    addressModel.City = addressEntity.City;
+                }
+
+            var viewModel = new AccountDetailsViewModel
+            {
+                User = userEntity!,
+                AddressInfo = addressModel
+            };
+
             return View(viewModel);
         }
 
-        [HttpPost]
-        public IActionResult BasicInfo(AccountDetailsViewModel viewModel)
+        #region [HttpPost] SaveBasicInfo
+        [Authorize]
+        [HttpPost] 
+        public async Task<IActionResult> SaveBasicInfo(AccountDetailsViewModel model)
         {
-            //_accountService.SaveBasicInfo(viewModel.BasicInfo)
-            return RedirectToAction("Index", viewModel);
-        }
+            ViewBag.ShowDiv = true;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Account Details";
 
+            var user = await _userManager.GetUserAsync(User);
+                
+                if (user != null)
+                {
+                    user.FirstName = model.BasicInfo.FirstName;
+                    user.LastName = model.BasicInfo.LastName;
+                    user.Email = model.BasicInfo.Email;
+                    user.PhoneNumber = model.BasicInfo.Phone;
+                    user.Biography = model.BasicInfo.Biography;
+
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                    model.SuccessErrorMessage = "Data was updated successfully!";
+                    return RedirectToAction("Index", "Account", model);
+                     
+                    }
+                }
+
+            return View(model);
+        }
+        #endregion
+
+        #region [HttpPost] SaveAddressInfo
+        [Authorize]
         [HttpPost]
-        public IActionResult AddressInfo(AccountDetailsViewModel viewModel)
+        public async Task<IActionResult> SaveAddressInfo(AccountDetailsViewModel model)
         {
-            //_accountService.SaveAddressInfo(viewModel.AddressInfo)
-            return RedirectToAction("Index", viewModel);
-        }
+            ViewBag.ShowDiv = true;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Account Details";
 
-        [Route("/signin")]
+            if (TryValidateModel(model.AddressInfo))
+            {
+                return RedirectToAction("Index", "Account", model);
+            }
+
+            ModelState.AddModelError("Failed to update data", "Unable to save the changed data");
+            ViewData["ErrorMessage"] = "Unable tp save the changes";
+
+            return View();
+        }
+        #endregion
+
+        //SIGN-IN
         [HttpGet]
-        public IActionResult SignIn()
+        [Route("/signin")]
+        public IActionResult SignIn(string returnUrl)
         {
             SetDefaultViewValues();
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Account");
+            }
+
+            ViewData["ReturnUrl"] = returnUrl ?? Url.Content("~/");
             return View();
         }
 
         [Route("/signin")]
         [HttpPost]
-        public async Task<IActionResult> SignIn(SignInViewModel viewModel)
+        public async Task<IActionResult> SignIn(SignInViewModel model, string returnUrl)
         {
             SetDefaultViewValues();
 
             if (ModelState.IsValid)
             {
-                var result = await _userServices.SignInUserAsync(viewModel.Form);
+                var result = await _signInManager.PasswordSignInAsync(model.Form.Email, model.Form.Password, model.Form.RememberMe, false);
+                Debug.WriteLine("PasswordSignInAsync result: " + result.Succeeded);
 
-                if (result != null)
-                {
-                    var claims = new List<Claim>()
-                    {
-                        new(ClaimTypes.NameIdentifier, result.Id),
-                        new(ClaimTypes.Name, result.FirstName + " " + result.LastName),
-                        new(ClaimTypes.Email, result.Email),
-                        new(ClaimTypes.MobilePhone, result.Phone!),
-                        new(ClaimTypes.GivenName, result.FirstName),
-                        new(ClaimTypes.Surname, result.LastName),
-                        new(ClaimTypes.UserData, result.Biography!),
-                    };
+                if (result.Succeeded)
+                { 
 
-                    await HttpContext.SignInAsync("AuthCookie", new ClaimsPrincipal(new ClaimsIdentity(claims, "AuthCookie")));
-                    //Detta tar oss till en annan sida om formuläret är godkänt.
+                    if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        return Redirect(returnUrl);
+
                     return RedirectToAction("Index", "Account");
+
                 }
             }
-
+            ModelState.AddModelError("IncorrextValues", "Incorrect email or password");
             ViewData["ErrorMessage"] = "Incorrect email or password";
-            return View();
+            return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Update(AccountDetailsViewModel model)
-        //{
-        //    SetDefaultViewValues();
-
-        //    if (ModelState.IsValid)
-        //    {
-
-
-        //        var result = await _userServices.UpdateUserInfo(model);
-
-        //        if (result.StatusCode == Infrastructure.Model.StatusCodes.OK)
-        //        {
-        //            return RedirectToAction("Index", "Account");
-        //        }
-        //    }
-        //    return RedirectToAction("Index", "Account");
-        //}
-
+        //SIGN-UP
 
         [Route("/signup")]
         [HttpGet]
@@ -127,28 +183,111 @@ namespace SiliconMVC.Controllers
         {
             SetDefaultViewValues();
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                var result = await _userServices.CreateUser(viewModel.Form);
+                var exist = await _userManager.Users.AnyAsync(x => x.Email == viewModel.Form.Email);
 
-                if (result.StatusCode == Infrastructure.Model.StatusCodes.OK)
-                {
-                    //Detta tar oss till en annan sida om formuläret är godkänt.
-                    return RedirectToAction("SignIn", "Account");
-                }
-                if(result.StatusCode == Infrastructure.Model.StatusCodes.EXISTS)
+                if(exist == true)
                 {
                     viewModel.ErrorMessage = "A user with the same email already exist";
+                    return View(viewModel); 
+                }
+
+                var userEntity = new UserEntity
+                {
+                    FirstName = viewModel.Form.FirstName,
+                    LastName = viewModel.Form.LastName,
+                    Email = viewModel.Form.Email,
+                    UserName = viewModel.Form.Email,
+                };
+
+                var result = await _userManager.CreateAsync(userEntity, viewModel.Form.Password);
+
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("SignIn", "Account");
                 }
             }
-            return View(viewModel);
+            return View(viewModel); 
         }
 
+        //SIGN_OUT
         [HttpGet]
         public new async Task<IActionResult> SignOut()
         {
-            await HttpContext.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("SignIn", "Account");
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    SetDefaultViewValues();
+
+//            if (ModelState.IsValid)
+//            {
+//                var result = await _userServices.CreateUser(viewModel.Form);
+
+//                if (result.StatusCode == Infrastructure.Model.StatusCodes.OK)
+//                {
+//                    //Detta tar oss till en annan sida om formuläret är godkänt.
+//                    return RedirectToAction("SignIn", "Account");
+//}
+//if (result.StatusCode == Infrastructure.Model.StatusCodes.EXISTS)
+//{
+//    viewModel.ErrorMessage = "A user with the same email already exist";
+//}
+//            }
+//            return View(viewModel);
+//        }
+
+
+
+
+
+
+
+
+
+
+//if (ModelState.IsValid)
+//{
+//    var result = await _userServices.SignInUserAsync(viewModel.Form);
+
+//    if (result != null)
+//    {
+//        var claims = new List<Claim>()
+//                    {
+//                        new(ClaimTypes.NameIdentifier, result.Id),
+//                        new(ClaimTypes.Name, result.FirstName + " " + result.LastName),
+//                        new(ClaimTypes.Email, result.Email),
+//                        new(ClaimTypes.MobilePhone, result.Phone!),
+//                        new(ClaimTypes.GivenName, result.FirstName),
+//                        new(ClaimTypes.Surname, result.LastName),
+//                        new(ClaimTypes.UserData, result.Biography!),
+//                    };
+
+//        await HttpContext.SignInAsync("AuthCookie", new ClaimsPrincipal(new ClaimsIdentity(claims, "AuthCookie")));
+//        //Detta tar oss till en annan sida om formuläret är godkänt.
+//        return RedirectToAction("Index", "Account");
+//    }
+//}
