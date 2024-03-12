@@ -18,13 +18,13 @@ namespace Infrastructure.Repositories
             _userContext = userContext;
         }
 
-        public async Task<AddressEntity> GetOneAsync(UserEntity entity)
+        public async Task<AddressEntity> GetOneAddressAsync(UserEntity entity)
         {
             try
             {
                 if (entity.Id != null)
                 {
-                    var result = await _userContext.Addresses.FirstOrDefaultAsync(x => x.Users == entity);
+                    var result = await _userContext.Addresses.FirstOrDefaultAsync(x => x.Id == entity.AddressId);
                     
                     if(result != null)
                     {
@@ -37,6 +37,35 @@ namespace Infrastructure.Repositories
             { Debug.WriteLine("GetAddress" + ex.Message);
                 return null!;
                  }
+        }
+
+        public async Task<bool> UpdateAddressAsync(UserEntity entity, AddressEntity addressEntity)
+        {
+            try
+            {
+                if (entity != null && addressEntity != null)
+                {
+                    var addressToUpdate = await _userContext.Addresses.FirstOrDefaultAsync(x => x.Id == entity.AddressId);
+
+                    if (addressToUpdate != null)
+                    {
+                        addressToUpdate.StreetName = addressEntity.StreetName;
+                        addressToUpdate.City = addressEntity.City;
+                        addressToUpdate.StreetName2 = addressEntity.StreetName2;
+                        addressToUpdate.PostalCode = addressEntity.PostalCode;
+
+                        await _userContext.SaveChangesAsync();
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("GetAddress" + ex.Message);
+                return false;
+            }
         }
     }
 }

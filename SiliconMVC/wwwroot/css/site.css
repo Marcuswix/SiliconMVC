@@ -3423,11 +3423,20 @@ main {
       #account .containerAccount .basicInfo {
         display: grid;
         grid-template-columns: 1fr 1fr; }
-        #account .containerAccount .basicInfo span {
-          color: #22C55E; }
+        #account .containerAccount .basicInfo .success {
+          color: #22C55E;
+          opacity: 1;
+          transition: ease-out 1200ms; }
+        #account .containerAccount .basicInfo .error {
+          color: #EF4444;
+          opacity: 1;
+          transition: ease-out 1200ms; }
+        #account .containerAccount .basicInfo .hide {
+          opacity: 0 !important;
+          transition: ease-in 1200ms; }
       #account .containerAccount h5 {
         color: #6366F1;
-        margin-bottom: 0rem; }
+        margin-bottom: 1rem; }
       #account .containerAccount .save-cancel {
         display: flex;
         gap: 1rem; }

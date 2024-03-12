@@ -37,6 +37,7 @@ namespace Infrastructure.Helpers.Middlewers
                         }
                     }
             }
+            
             await _requestDelegate(context);
         }
     }

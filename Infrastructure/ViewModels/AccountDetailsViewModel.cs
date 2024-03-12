@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Entities;
-using Infrastructure.Model;
 
 namespace Infrastructure.ViewModels
 {
@@ -7,12 +6,8 @@ namespace Infrastructure.ViewModels
     {
         public string Title { get; set; } = "Account Details";
 
-        public UserEntity? User { get; set; } = new UserEntity();
+        public UserEntity? User { get; set; }
 
-        public AccountDetailsModel? BasicInfo {  get; set; } = new  AccountDetailsModel();
-
-        public AccountDertailsAddressModel? AddressInfo { get; set; } = new AccountDertailsAddressModel();
-
-        public string? SuccessErrorMessage { get; set; }
+        public bool IsExternalAccount { get; set; }
     }
 }

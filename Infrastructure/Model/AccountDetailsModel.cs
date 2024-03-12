@@ -6,7 +6,7 @@ namespace Infrastructure.Model
     public class AccountDetailsModel
     {
         [Key]
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         [DataType(DataType.ImageUrl)]
         public string? ProfileImage { get; set; }

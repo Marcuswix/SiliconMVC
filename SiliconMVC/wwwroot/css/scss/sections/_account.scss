@@ -81,14 +81,27 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
 
-                span {
+                .success {
                     color: $success;
+                    opacity: 1;
+                    transition: ease-out 1200ms;
+                }
+
+                .error {
+                    color: $danger;
+                    opacity: 1;
+                    transition: ease-out 1200ms;
+                }
+
+                .hide {
+                    opacity: 0 !important;
+                    transition: ease-in 1200ms;
                 }
             }
 
             h5 {
                 color: $theme;
-                margin-bottom: 0rem;
+                margin-bottom: 1rem;
             }
 
             .save-cancel {

@@ -61,17 +61,26 @@ namespace Infrastructure
                 x.SlidingExpiration = true;
             });
 
+            //Lägg till Facebook auth...
+            builder.Services.AddAuthentication().AddFacebook(x =>
+            {
+                x.AppId = "1199838401400858";
+                x.AppSecret = "d631e6040dc68772c8d1062f09267c9a";
+                x.Fields.Add("first_name");
+                x.Fields.Add("last_name");
+            });
+
             var app = builder.Build();
 
-            app.UseExceptionHandler("/Home/Error");
+            //app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
-            app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 
             app.UseUserSessionValidation();
-            //app.UseAuthentication(); //Vem är du?
+            app.UseAuthentication(); //Vem är du - vi har ett formulär som skickas till en server med en Post?
+            app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
             app.UseAuthorization(); // Vad får du göra?
 
             app.MapControllerRoute(

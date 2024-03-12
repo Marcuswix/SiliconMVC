@@ -11,10 +11,12 @@ namespace Infrastructure.Services
     public class UserServices
     {
         private readonly UserRepository _repository;
+        private readonly AddressRepository _addressRepository;
 
-        public UserServices(UserRepository repository)
+        public UserServices(UserRepository repository, AddressRepository addressRepository)
         {
             _repository = repository;
+            _addressRepository = addressRepository;
         }
 
         //CRUD
@@ -126,6 +128,37 @@ namespace Infrastructure.Services
             }
             catch (Exception ex){ Debug.WriteLine("UpdateUserInfo" + ex.Message);
             return ResponseFactory.Error(); ;
+            }
+        }
+
+        public async Task<RepositoriesResult> CreateAddress(AccountAddressDetailsViewModel model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var address = new AddressEntity
+                    {
+                        StreetName = model.AddressInfo.Address,
+                        StreetName2 = model.AddressInfo.Address2,
+                        PostalCode = model.AddressInfo.PostalCode,
+                        City = model.AddressInfo.City,
+                    };
+
+                    var result = _addressRepository.CreateOneAsync(address);
+
+                    if (result.Result.StatusCode == StatusCodes.OK)
+                    {
+                        return ResponseFactory.Ok(address);
+                    }
+                }
+
+                return ResponseFactory.Error();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("CreateAddres" + ex.Message);
+                return ResponseFactory.Error(); ;
             }
         }
     }

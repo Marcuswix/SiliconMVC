@@ -3,6 +3,7 @@ using Infrastructure.Model;
 using Infrastructure.Repositories;
 using Infrastructure.Factories;
 using System.Diagnostics;
+using Infrastructure.ViewModels;
 
 namespace Infrastructure.Services
 {
@@ -16,7 +17,7 @@ namespace Infrastructure.Services
         }
 
         //Create
-        public async Task<RepositoriesResult> CreateAddress(AddressModel address)
+        public async Task<RepositoriesResult> CreateAddress(AccountDertailsAddressModel address)
         {
             try
             {
@@ -24,12 +25,13 @@ namespace Infrastructure.Services
                 {
                     var addressToCreate = new AddressEntity
                     {
-                        StreetName = address.StreetName,
+                        StreetName = address.Address,
+                        StreetName2 = address.Address2,
                         PostalCode = address.PostalCode,
                         City = address.City,
                     };
 
-                    var exists = await _repository.AlreadyExistAsync(x => x.StreetName == address.StreetName && x.PostalCode == address.PostalCode && x.City == address.City);
+                    var exists = await _repository.AlreadyExistAsync(x => x.StreetName == address.Address && x.PostalCode == address.PostalCode && x.City == address.City);
 
                     if(exists == null)
                     {
@@ -55,12 +57,45 @@ namespace Infrastructure.Services
             }
         }
 
+        public async Task<bool> UpdateAddresses(AccountAddressDetailsViewModel model, UserEntity user)
+        {
+            try
+            {
+                if(model != null && user != null)
+                {
+                    var addressEntity = new AddressEntity
+                    {
+                        StreetName = model.AddressInfo.Address,
+                        StreetName2 = model.AddressInfo.Address2,
+                        PostalCode = model.AddressInfo.PostalCode,
+                        City = model.AddressInfo.City,
+                    };
+
+                    var result = await _repository.UpdateAddressAsync(user, addressEntity);
+                    
+                    if(result == true)
+                    {
+                        return true;
+                    }
+                }
+
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("UpdateAddresses" + ex.Message);
+                return false;
+            }
+        }
+
         public async Task<AddressEntity> GetOneAddresses(UserEntity entity)
         {
             try
             {
-                var result = await _repository.GetOneAsync(entity);
-                
+                var result = await _repository.GetOneAddressAsync(entity);
+
+
                 if (result != null)
                 {
                     return result;

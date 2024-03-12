@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Infrastructure.Model;
+using System.Security.Claims;
 
 namespace Infrastructure.Controllers
 {
@@ -33,6 +31,8 @@ namespace Infrastructure.Controllers
             ViewBag.ShowChoices = false;
         }
 
+
+        #region [HttpGet] Index
         //INDEX
         [Authorize]
         [HttpGet]
@@ -48,39 +48,169 @@ namespace Infrastructure.Controllers
                 return RedirectToAction("SigIn", "Account");
             }
 
+            // Hämta och rendera UserInfo
+            var userInfoResult = await UserInfo();
+            if (userInfoResult is ViewResult userInfoView)
+            {
+                // Lägg till UserInfo till ViewData för att användas i Index-vyn
+                ViewData["UserInfo"] = userInfoView.Model;
+            }
+
+            // Hämta och rendera BasicInfo
+            var basicInfoResult = await BasicInfo();
+            if (basicInfoResult is ViewResult basicInfoView)
+            {
+                // Lägg till BasicInfo till ViewData för att användas i Index-vyn
+                ViewData["BasicInfo"] = basicInfoView.Model;
+            }
+
+            // Hämta och rendera AddressInfo
+            var addressInfoResult = await AddressInfo();
+            if (addressInfoResult is ViewResult addressInfoView)
+            {
+                // Lägg till AddressInfo till ViewData för att användas i Index-vyn
+                ViewData["AddressInfo"] = addressInfoView.Model;
+            }
+
+            return View();
+        }
+        #endregion
+
+        #region [HttpGet] UserInfo
+        //INDEX
+        [Authorize]
+        public async Task<IActionResult> UserInfo()
+        {
+            ViewBag.ShowDiv = true;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Account Details";
+
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("SigIn", "Account");
+            }
+
             var userEntity = await _userManager.GetUserAsync(User);
-            var addressEntity = await _addressServices.GetOneAddresses(userEntity);
-
-            var addressModel = new AccountDertailsAddressModel();
-
-                if (addressEntity != null!)
-                {
-                    addressModel.Address = addressEntity.StreetName;
-                    addressModel.Address2 = addressEntity.StreetName2;
-                    addressModel.PostalCode = addressEntity.PostalCode;
-                    addressModel.City = addressEntity.City;
-                }
 
             var viewModel = new AccountDetailsViewModel
             {
-                User = userEntity!,
-                AddressInfo = addressModel
+                User = userEntity
             };
 
             return View(viewModel);
         }
+        #endregion
+
+        #region [HttpGet] BasicInfo
+        //INDEX
+        [Authorize]
+        public async Task<IActionResult> BasicInfo()
+        {
+            ViewBag.ShowDiv = true;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Account Details";
+
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("SigIn", "SigIn");
+            }
+
+            var userEntity = await _userManager.GetUserAsync(User);
+
+            if(userEntity != null)
+            {
+                var viewModel = new AccountBasicInfoViewModel
+                {
+
+                    BasicInfo = new AccountDetailsModel
+                    {
+                        FirstName = userEntity.FirstName,
+                        LastName = userEntity.LastName,
+                        Email = userEntity.Email,
+                        Phone = userEntity.PhoneNumber,
+                        Biography = userEntity.Biography,
+                    }
+
+                };
+                return View(viewModel);
+            }
+
+            return View();
+        }
+        #endregion
+
+        #region [HttpGet] UserInfo
+        //INDEX
+        [Authorize]
+        public async Task<IActionResult> AddressInfo()
+        {
+            ViewBag.ShowDiv = true;
+            ViewBag.ShowChoices = false;
+            ViewData["Title"] = "Account Details";
+
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("SigIn", "SignIn");
+            }
+
+            var userEntity = await _userManager.GetUserAsync(User);
+
+            if (userEntity != null)
+            {
+                var addressId = userEntity.AddressId;
+
+                if(addressId != null)
+                {
+                    var entity = await _addressServices.GetOneAddresses(userEntity);
+
+                    var viewModel = new AccountAddressDetailsViewModel
+                    {
+                        AddressInfo = new AccountDertailsAddressModel
+                        {
+                            Address = entity.StreetName,
+                            Address2 = entity.StreetName2,
+                            PostalCode = entity.PostalCode,
+                            City = entity.City,
+                        }
+                    };
+                    return View(viewModel);
+                }
+
+                if(addressId == null)
+                {
+                    var viewModel = new AccountAddressDetailsViewModel
+                    {
+                        AddressInfo = new AccountDertailsAddressModel
+                        {
+                            Address = string.Empty,
+                            Address2 = string.Empty,
+                            PostalCode = string.Empty,
+                            City = string.Empty,
+                        }
+                    };
+
+                    return View(viewModel);
+                }
+            }
+            return View();
+        }
+        #endregion
+
 
         #region [HttpPost] SaveBasicInfo
         [Authorize]
         [HttpPost] 
-        public async Task<IActionResult> SaveBasicInfo(AccountDetailsViewModel model)
+        public async Task<IActionResult> SaveBasicInfo(AccountBasicInfoViewModel model)
         {
             ViewBag.ShowDiv = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 
             var user = await _userManager.GetUserAsync(User);
-                
+
+            if (ModelState.IsValid)
+            {
+
                 if (user != null)
                 {
                     user.FirstName = model.BasicInfo.FirstName;
@@ -88,206 +218,139 @@ namespace Infrastructure.Controllers
                     user.Email = model.BasicInfo.Email;
                     user.PhoneNumber = model.BasicInfo.Phone;
                     user.Biography = model.BasicInfo.Biography;
+                    user.IsExternalAccount = model.IsExternalAccount;
 
                     var result = await _userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
                     {
-                    model.SuccessErrorMessage = "Data was updated successfully!";
-                    return RedirectToAction("Index", "Account", model);
-                     
+                        TempData["SuccessMessageBasicInfo"] = "The data was updated successfully";
+                        return RedirectToAction("Index", "Account", model);
+                    }
+                    if (result.Succeeded != true)
+                    {
+                        TempData["ErrorMessageBasicInfo"] = "The data was not updated...";
+                        return RedirectToAction("Index", "Account", model);
                     }
                 }
+            }
 
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+            }
+
+            return View("Index", model);
         }
         #endregion
 
         #region [HttpPost] SaveAddressInfo
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SaveAddressInfo(AccountDetailsViewModel model)
+        public async Task<IActionResult> SaveAddressInfo(AccountAddressDetailsViewModel model)
         {
             ViewBag.ShowDiv = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 
-            if (TryValidateModel(model.AddressInfo))
-            {
-                return RedirectToAction("Index", "Account", model);
-            }
+                var user = await _userManager.GetUserAsync(User);
+
+                if (ModelState.IsValid && user.AddressId == null)
+                {
+                var newAddress = new AccountDertailsAddressModel
+                {
+                    Address = model.AddressInfo.Address,
+                    Address2 = model.AddressInfo.Address2,
+                    PostalCode = model.AddressInfo.PostalCode,
+                    City = model.AddressInfo.City,
+                };
+                    await _addressServices.CreateAddress(newAddress);
+                    return RedirectToAction("Index", "Account", model);
+                }
+                if (ModelState.IsValid && user.AddressId != null)
+                {
+                    var successResult = await _addressServices.UpdateAddresses(model, user);
+
+                    if (successResult == true)
+                    {
+                        TempData["SuccessMessageAddressInfo"] = "Data was successfully updated!";
+                        return RedirectToAction("Index", "Account", model);
+                    }
+                    else
+                    {
+                        TempData["ErrorMessageAddressInfo"] = "The data wasn't updated";
+                        return RedirectToAction("Index", "Account", model);
+                }
+                }
 
             ModelState.AddModelError("Failed to update data", "Unable to save the changed data");
-            ViewData["ErrorMessage"] = "Unable tp save the changes";
+            TempData["ErrorMessageAddressInfo"] = "Unable to save the changes";
 
-            return View();
+            return View("Index", model);
         }
         #endregion
 
-        //SIGN-IN
+        #region [HttpGet] FacebookCallback
         [HttpGet]
-        [Route("/signin")]
-        public IActionResult SignIn(string returnUrl)
+        public async Task<IActionResult> FacebookCallback()
         {
-            SetDefaultViewValues();
+            var info = await _signInManager.GetExternalLoginInfoAsync();
 
-            if (_signInManager.IsSignedIn(User))
+            if (info != null)
             {
-                return RedirectToAction("Index", "Account");
-            }
-
-            ViewData["ReturnUrl"] = returnUrl ?? Url.Content("~/");
-            return View();
-        }
-
-        [Route("/signin")]
-        [HttpPost]
-        public async Task<IActionResult> SignIn(SignInViewModel model, string returnUrl)
-        {
-            SetDefaultViewValues();
-
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(model.Form.Email, model.Form.Password, model.Form.RememberMe, false);
-                Debug.WriteLine("PasswordSignInAsync result: " + result.Succeeded);
-
-                if (result.Succeeded)
-                { 
-
-                    if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
-
-                    return RedirectToAction("Index", "Account");
-
-                }
-            }
-            ModelState.AddModelError("IncorrextValues", "Incorrect email or password");
-            ViewData["ErrorMessage"] = "Incorrect email or password";
-            return View(model);
-        }
-
-        //SIGN-UP
-
-        [Route("/signup")]
-        [HttpGet]
-        public IActionResult SignUp()
-        {
-            var viewModel = new SignUpViewModel();
-            SetDefaultViewValues();
-            return View(viewModel);
-        }
-
-        [Route("/signup")]
-        [HttpPost]
-        public async Task<IActionResult> SignUp(SignUpViewModel viewModel)
-        {
-            SetDefaultViewValues();
-
-            if(ModelState.IsValid)
-            {
-                var exist = await _userManager.Users.AnyAsync(x => x.Email == viewModel.Form.Email);
-
-                if(exist == true)
-                {
-                    viewModel.ErrorMessage = "A user with the same email already exist";
-                    return View(viewModel); 
-                }
-
                 var userEntity = new UserEntity
                 {
-                    FirstName = viewModel.Form.FirstName,
-                    LastName = viewModel.Form.LastName,
-                    Email = viewModel.Form.Email,
-                    UserName = viewModel.Form.Email,
+                    FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)!,
+                    LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)!,
+                    Email = info.Principal.FindFirstValue(ClaimTypes.Email)!,
+                    UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                    IsExternalAccount = true,
                 };
 
-                var result = await _userManager.CreateAsync(userEntity, viewModel.Form.Password);
+                var user = await _userManager.FindByEmailAsync(userEntity.Email);
 
-                if(result.Succeeded)
+                if(user == null)
                 {
-                    return RedirectToAction("SignIn", "Account");
+                    var result = await _userManager.CreateAsync(userEntity);
+
+                    if(result.Succeeded)
+                    {
+                        user = await _userManager.FindByEmailAsync(userEntity.Email);
+                    }
+                }
+
+                if(user != null)
+                {
+                    if (user.FirstName != userEntity.FirstName || user.LastName != userEntity.LastName || user.Email != userEntity.Email)
+                    {
+                        user.FirstName = userEntity.FirstName;
+                        user.LastName = userEntity.LastName;
+                        user.Email = userEntity.Email;
+                        user.IsExternalAccount = true;
+
+                        await _userManager.UpdateAsync(user);
+                    }
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    if(HttpContext.User != null)
+                    {
+                        return RedirectToAction("Index", "Home");   
+                    }
                 }
             }
-            return View(viewModel); 
+
+            ModelState.AddModelError("InvalidFacebookAuthenication", "danger|Failed facebook authentication");
+            ViewData["StatusMessage"] = "danger|Failed facebook authentication";
+            return RedirectToAction("Index", "SignIn");
         }
+        #endregion
+        
 
         //SIGN_OUT
-        [HttpGet]
         public new async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("SignIn", "Account");
+            return RedirectToAction("Index", "SignIn");
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    SetDefaultViewValues();
-
-//            if (ModelState.IsValid)
-//            {
-//                var result = await _userServices.CreateUser(viewModel.Form);
-
-//                if (result.StatusCode == Infrastructure.Model.StatusCodes.OK)
-//                {
-//                    //Detta tar oss till en annan sida om formuläret är godkänt.
-//                    return RedirectToAction("SignIn", "Account");
-//}
-//if (result.StatusCode == Infrastructure.Model.StatusCodes.EXISTS)
-//{
-//    viewModel.ErrorMessage = "A user with the same email already exist";
-//}
-//            }
-//            return View(viewModel);
-//        }
-
-
-
-
-
-
-
-
-
-
-//if (ModelState.IsValid)
-//{
-//    var result = await _userServices.SignInUserAsync(viewModel.Form);
-
-//    if (result != null)
-//    {
-//        var claims = new List<Claim>()
-//                    {
-//                        new(ClaimTypes.NameIdentifier, result.Id),
-//                        new(ClaimTypes.Name, result.FirstName + " " + result.LastName),
-//                        new(ClaimTypes.Email, result.Email),
-//                        new(ClaimTypes.MobilePhone, result.Phone!),
-//                        new(ClaimTypes.GivenName, result.FirstName),
-//                        new(ClaimTypes.Surname, result.LastName),
-//                        new(ClaimTypes.UserData, result.Biography!),
-//                    };
-
-//        await HttpContext.SignInAsync("AuthCookie", new ClaimsPrincipal(new ClaimsIdentity(claims, "AuthCookie")));
-//        //Detta tar oss till en annan sida om formuläret är godkänt.
-//        return RedirectToAction("Index", "Account");
-//    }
-//}

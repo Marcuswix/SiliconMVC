@@ -1,5 +1,4 @@
-﻿@model AccountDetailsViewModel;
-@inject SignInManager<UserEntity> _signInManager
+﻿@inject SignInManager<UserEntity> _signInManager
 
 <header id="header" class="">
     <div class="container">
@@ -13,6 +12,7 @@
                     <a class="menu-link" href="#features">Features</a>
                 }
                 <a class="menu-link" asp-controller="Contact" asp-action="Index">Contact</a>
+
                 @if (_signInManager.IsSignedIn(User))
                 {
                     <a class="menu-link" asp-controller="" asp-action="">Courses</a>
@@ -58,9 +58,9 @@
                     }
                     else
                     {
-                        <a class="menu-link" asp-controller="Account" asp-action="SignIn">
+                        <a class="menu-link" asp-controller="SignIn" asp-action="Index">
                         <li class="menu-link">Sign in</li></a>
-                        <a class="menu-link" asp-controller="Account" asp-action="SignUp">
+                        <a class="menu-link" asp-controller="SignUp" asp-action="Index">
                         <li class="menu-link">Sign Up</li></a>
                     }
 
@@ -75,8 +75,8 @@
             }
             else
             {
-                <a class="btn-gray" asp-controller="Account" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
-                <a class="btn-theme" asp-controller="Account" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
+                <a class="btn-gray" asp-controller="SignIn" asp-action="Index"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
+                <a class="btn-theme" asp-controller="SignUp" asp-action="Index"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
             }
         </div>
     </div>
