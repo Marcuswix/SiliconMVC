@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Model
 {
-    public class AccountDertailsAddressModel
+    public class AccountDetailsAddressModel
     {
         [Display(Name = "Address", Prompt = "Enter your address line", Order = 0)]
         [Required(ErrorMessage = "An Address is required")]

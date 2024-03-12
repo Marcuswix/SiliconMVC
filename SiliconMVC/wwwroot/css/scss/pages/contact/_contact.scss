@@ -6,6 +6,17 @@
         width: 100%;
         overflow: hidden;
 
+        .hide {
+            transition: opacity ease-in-out 500ms;
+            opacity: 0 !important;
+            display: none;
+        }
+
+        .success {
+            transition: opacity ease-in-out 500ms;
+            opacity: 1;
+        }
+
 
         .navigation {
             display: flex;

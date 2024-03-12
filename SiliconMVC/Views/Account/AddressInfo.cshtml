@@ -4,22 +4,22 @@
 
     <div id="boxAddress">
         <label><b>Address line 1</b></label>
-        <span asp-validation-for="@Model.AddressInfo.Address"></span>
+        <span asp-validation-for="AddressInfo.Address"></span>
         <input asp-for="@Model.AddressInfo.Address" value="@Model.AddressInfo?.Address" />
     </div>
     <div id="boxAddress2">
         <label><b>Address line 2 <b class="grey-color"> (optional)</b></b></label>
-        <span asp-validation-for="@Model.AddressInfo.Address2"></span>
+        <span asp-validation-for="AddressInfo.Address2"></span>
         <input asp-for="@Model.AddressInfo.Address2" value="@Model.AddressInfo?.Address2" />
     </div>
     <div id="boxPostalCode">
-        <label><b>Postal code</b></label>
-        <span asp-validation-for="@Model.AddressInfo.PostalCode"></span>
+        <label asp-for="AddressInfo.PostalCode"><b>Postal code</b></label>
+        <span asp-validation-for="AddressInfo.PostalCode"></span>
         <input asp-for="@Model.AddressInfo.PostalCode" value="@Model.AddressInfo?.PostalCode" />
     </div>
     <div id="boxCity">
-        <label><b>City</b></label>
-        <span asp-validation-for="@Model.AddressInfo.City"></span>
+        <label asp-for="AddressInfo.City"><b>City</b></label>
+        <span asp-validation-for="AddressInfo.City"></span>
         <input asp-for="@Model.AddressInfo.City" value="@Model.AddressInfo?.City" />
     </div>
     <div class="save-cancel">

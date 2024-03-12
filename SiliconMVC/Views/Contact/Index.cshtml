@@ -27,6 +27,11 @@
                         <p>Please feel free to drop us a line. We will respond as soon as possible.</p>
                         <button class="btn-contact" id="email-us" onclick="{showHideMessage()}">Leave us a message<i class="fa-solid fa-arrow-right"></i></button>
                     </div>
+
+                    @if (TempData["ThanksForYourMessage"] != null)
+                    {
+                        <span id="ThanksForYourMessage" class="success">@TempData["ThanksForYourMessage"]</span>
+                    }
                 </div>
                 <hr />
                 <div class="box">
@@ -49,6 +54,12 @@
                         <p>Sit ac ipsum leo lorem magna nunc mattis maecenas non vestibulum.</p>
                         <button class="btn-contact" id="send-application" onclick="{showHideApplication()}">Send an application<i class="fa-solid fa-arrow-right"></i></button>
                     </div>
+
+                    @if (TempData["ThanksForYourApplication"] != null)
+                    {
+                        <span id="thanksforyourApplication" class="success">@TempData["ThanksForYourApplication"]</span>
+                    }
+
                 </div>
             </div>
 
@@ -57,7 +68,7 @@
                 <button class="x-mark-container" id="x-mark-contact" onclick="{hideMessage()}">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <form class="form-message" method="post" novalidate>
+                <form id="Message" class="form-message" onsubmit="{onsubmitMessage()}" method="post" asp-controller="Contact" asp-action="Message" novalidate>
                     <h2 id="headlineform">Get In Contact With Us</h2>
                     <div class="input-container">
                         <div>
@@ -106,26 +117,26 @@
                 <button class="x-mark-container" id="x-mark-contact" onclick="{hideMessage()}">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <form class="form-message" method="post" novalidate>
+                <form id="Application" onsubmit="{onsubmitApplication()}" class="form-message" method="post" asp-controller="Contact" asp-action="Application" novalidate>
                     <h2 id="headlineform">Wanna Work with Us?</h2>
                     <div class="input-container">
                         <div>
-                            <label><b>Full Name</b></label>
-                            <span>Invalid something</span>
+                            <label asp-for="Application.Name"><b>Full Name</b></label>
+                            <span asp-validation-for="Application.Name"></span>
                         </div>
-                            <input />
+                            <input asp-for="Application.Name"/>
                     </div>
                     <div class="input-container">
                         <div>
-                            <label><b>Email</b></label>
-                            <span>Invalid something</span>
+                            <label asp-for="Application.Email"><b>Email</b></label>
+                            <span asp-validation-for="Application.Email"></span>
                         </div>
-                            <input />
+                            <input asp-for="Application.Email"/>
                         </div>
 
                     <div class="input-container">
-                        <label><b>Career</b><b class="optional">(Optional)</b></label>
-                        <select class="select">
+                        <label asp-for="Application.Career"><b>Career</b><b class=" optional">(Optional)</b></label>
+                        <select asp-for="Application.Career" class="select">
                             <option disabled selected>Choose type of career</option>
                             <Option value="1">Alt 1</Option>
                             <Option value="2">Alt 2</Option>
@@ -135,17 +146,16 @@
 
                     <div>
                         <div class="input-theme">
-                            <div>
-                                <label><b>Application Message</b></label>
-                                <span>Invalid something</span>
+                            <div class="input-container">
+                                <label asp-for="Application.Message"><b>Application Message</b></label>
+                                <span asp-validation-for="Application.Message"></span>
                             </div>
                         </div>
-                        <textarea class="inputArea"></textarea>
+                        <textarea asp-for="Application.Message" class="inputArea"></textarea>
                     </div>
                     <button class="btn-theme-s" type="submit">Send Application</button>
                 </form>
             </div>
-
         </div>
 
     </div>

@@ -27,6 +27,6 @@ namespace Infrastructure.Model
 
         public int? AddressId { get; set; }
 
-        public AccountDertailsAddressModel? Address { get; set; }
+        public AccountDetailsAddressModel? Address { get; set; }
     }
 }

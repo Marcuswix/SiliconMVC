@@ -4,8 +4,10 @@ namespace Infrastructure.ViewModels
 {
     public class AccountAddressDetailsViewModel
     {
-        public AccountDertailsAddressModel? AddressInfo { get; set; } = new AccountDertailsAddressModel();
+        public AccountDetailsAddressModel? AddressInfo { get; set; }
 
-        public string? SuccessErrorMessage { get; set; }
+        public string? SuccessMessageAddressInfo { get; set; }
+
+        public string? ErrorMessageAddressInfo { get; set; }
     }
 }

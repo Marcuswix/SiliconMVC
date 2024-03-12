@@ -12,14 +12,12 @@ namespace Infrastructure.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserServices _userServices;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly UserManager<UserEntity> _userManager;
         private readonly AddressServices _addressServices;
 
-        public AccountController(UserServices userServices, SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, AddressServices addressServices)
+        public AccountController(SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, AddressServices addressServices)
         {
-            _userServices = userServices;
             _signInManager = signInManager;
             _userManager = userManager;
             _addressServices = addressServices;
@@ -48,24 +46,23 @@ namespace Infrastructure.Controllers
                 return RedirectToAction("SigIn", "Account");
             }
 
-            // Hämta och rendera UserInfo
             var userInfoResult = await UserInfo();
+
             if (userInfoResult is ViewResult userInfoView)
             {
-                // Lägg till UserInfo till ViewData för att användas i Index-vyn
                 ViewData["UserInfo"] = userInfoView.Model;
             }
 
-            // Hämta och rendera BasicInfo
             var basicInfoResult = await BasicInfo();
+
             if (basicInfoResult is ViewResult basicInfoView)
             {
-                // Lägg till BasicInfo till ViewData för att användas i Index-vyn
                 ViewData["BasicInfo"] = basicInfoView.Model;
             }
 
             // Hämta och rendera AddressInfo
             var addressInfoResult = await AddressInfo();
+
             if (addressInfoResult is ViewResult addressInfoView)
             {
                 // Lägg till AddressInfo till ViewData för att användas i Index-vyn
@@ -165,7 +162,7 @@ namespace Infrastructure.Controllers
 
                     var viewModel = new AccountAddressDetailsViewModel
                     {
-                        AddressInfo = new AccountDertailsAddressModel
+                        AddressInfo = new AccountDetailsAddressModel
                         {
                             Address = entity.StreetName,
                             Address2 = entity.StreetName2,
@@ -180,7 +177,7 @@ namespace Infrastructure.Controllers
                 {
                     var viewModel = new AccountAddressDetailsViewModel
                     {
-                        AddressInfo = new AccountDertailsAddressModel
+                        AddressInfo = new AccountDetailsAddressModel
                         {
                             Address = string.Empty,
                             Address2 = string.Empty,
@@ -256,7 +253,7 @@ namespace Infrastructure.Controllers
 
                 if (ModelState.IsValid && user.AddressId == null)
                 {
-                var newAddress = new AccountDertailsAddressModel
+                var newAddress = new AccountDetailsAddressModel
                 {
                     Address = model.AddressInfo.Address,
                     Address2 = model.AddressInfo.Address2,
@@ -273,78 +270,20 @@ namespace Infrastructure.Controllers
                     if (successResult == true)
                     {
                         TempData["SuccessMessageAddressInfo"] = "Data was successfully updated!";
-                        return RedirectToAction("Index", "Account", model);
                     }
                     else
                     {
                         TempData["ErrorMessageAddressInfo"] = "The data wasn't updated";
-                        return RedirectToAction("Index", "Account", model);
-                }
-                }
-
-            ModelState.AddModelError("Failed to update data", "Unable to save the changed data");
-            TempData["ErrorMessageAddressInfo"] = "Unable to save the changes";
-
-            return View("Index", model);
-        }
-        #endregion
-
-        #region [HttpGet] FacebookCallback
-        [HttpGet]
-        public async Task<IActionResult> FacebookCallback()
-        {
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-
-            if (info != null)
-            {
-                var userEntity = new UserEntity
-                {
-                    FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)!,
-                    LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)!,
-                    Email = info.Principal.FindFirstValue(ClaimTypes.Email)!,
-                    UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
-                    IsExternalAccount = true,
-                };
-
-                var user = await _userManager.FindByEmailAsync(userEntity.Email);
-
-                if(user == null)
-                {
-                    var result = await _userManager.CreateAsync(userEntity);
-
-                    if(result.Succeeded)
-                    {
-                        user = await _userManager.FindByEmailAsync(userEntity.Email);
+                        
                     }
-                }
-
-                if(user != null)
-                {
-                    if (user.FirstName != userEntity.FirstName || user.LastName != userEntity.LastName || user.Email != userEntity.Email)
-                    {
-                        user.FirstName = userEntity.FirstName;
-                        user.LastName = userEntity.LastName;
-                        user.Email = userEntity.Email;
-                        user.IsExternalAccount = true;
-
-                        await _userManager.UpdateAsync(user);
-                    }
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    if(HttpContext.User != null)
-                    {
-                        return RedirectToAction("Index", "Home");   
-                    }
-                }
+                    return RedirectToAction("Index", "Account", model);
             }
 
-            ModelState.AddModelError("InvalidFacebookAuthenication", "danger|Failed facebook authentication");
-            ViewData["StatusMessage"] = "danger|Failed facebook authentication";
-            return RedirectToAction("Index", "SignIn");
+            TempData["ErrorMessageAddressInfo"] = "Unable to save the changes";
+
+            return RedirectToAction("Index", "Account");
         }
-        #endregion
-        
+        #endregion       
 
         //SIGN_OUT
         public new async Task<IActionResult> SignOut()

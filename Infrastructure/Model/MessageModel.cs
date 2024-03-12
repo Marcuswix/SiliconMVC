@@ -14,7 +14,6 @@ namespace Infrastructure.Models
         public string Email { get; set; } = null!;
 
         [Display(Name = "Subject", Order = 2)]
-        [Required(ErrorMessage = "Choose the service you interested in")]
         public string? Subject { get; set; }
 
         [Display(Name = "Message", Prompt = "Enter you message here...", Order = 3)]

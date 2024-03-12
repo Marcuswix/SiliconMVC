@@ -16,6 +16,11 @@
                 @if (_signInManager.IsSignedIn(User))
                 {
                     <a class="menu-link" asp-controller="" asp-action="">Courses</a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="menu-link" asp-controller="Admin" asp-action="Index">Admin</a>
+                    }
                 }
             </nav>
         </div>
@@ -35,13 +40,6 @@
                 <ul>
                     <a class="menu-link" asp-controller="Home" asp-action="Index">
                     <li class="menu-link">Home</li></a>
-                    @if (ViewBag.ShowChoices)
-                    {
-                        <a class="menu-link" href="#showcase">
-                        <li class="menu-link">Overview</li></a>
-                        <a class="menu-link" href="#features">
-                        <li class="menu-link">Features</li></a>
-                    }
                     <a class="menu-link" asp-controller="Contact" asp-action="Index">
                     <li class="menu-link">Contact</li></a>
 
@@ -53,6 +51,12 @@
                         <a class="menu-link" asp-controller="Account" asp-action="Index">
                         <li class="menu-link">My Account</li></a>
 
+                        @if(User.IsInRole("Admin"))
+                        {
+                            <a class="menu-link" asp-controller="Admin" asp-action="Index">
+                            <li class="menu-link">Admin</li></a>
+                        }
+
                         <a class="menu-link" asp-controller="Account" asp-action="SignOut">
                         <li class="menu-link">Sign Out</li></a>
                     }
@@ -63,7 +67,6 @@
                         <a class="menu-link" asp-controller="SignUp" asp-action="Index">
                         <li class="menu-link">Sign Up</li></a>
                     }
-
                 </ul>
             </div>
         </div>

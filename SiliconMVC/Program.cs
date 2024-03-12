@@ -5,12 +5,13 @@ using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Infrastructure
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,7 @@ namespace Infrastructure
             builder.Services.AddScoped<AddressEntity>();
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<UserEntity>();
-            builder.Services.AddScoped<UserServices>();
+            //builder.Services.AddScoped<UserServices>();
             builder.Services.AddScoped<AddressServices>();
             builder.Services.AddScoped<FeatureRepository>();
             builder.Services.AddScoped<FeatureItemRepository>();
@@ -38,27 +39,38 @@ namespace Infrastructure
             builder.Services.AddScoped<AddressServices>();
             builder.Services.AddScoped<AddressRepository>();
             builder.Services.AddScoped<UserManager<UserEntity>>();
-            builder.Services.AddScoped<SignInManager<UserEntity>>();
+            builder.Services.AddScoped<SignInManager<UserEntity>>();           
 
             builder.Services.AddDefaultIdentity<UserEntity>(x =>
              {
                  x.User.RequireUniqueEmail = true;
                  x.SignIn.RequireConfirmedAccount = false;
                  x.Password.RequiredLength = 8;
-             }).AddEntityFrameworkStores<UserContext>();
+             })
+                .AddRoles<IdentityRole>() //Detta gör så att vi använder identitysrole system...
+                .AddEntityFrameworkStores<UserContext>();
 
             builder.Services.ConfigureApplicationCookie(x =>
             {
                 //Detta förhindrar att någon kan läsa ut cookieinformationen
-                x.Cookie.HttpOnly = true;
+                x.Cookie.HttpOnly = true; //Webbläsaren kan inte hämta information från min cookie...
                 x.LoginPath = "/signin";
                 x.LogoutPath = "/signout";
                 x.AccessDeniedPath = "/denied";
-                x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                x.Cookie.SecurePolicy = CookieSecurePolicy.Always; //Allt ska gå via https...
                 //Användaren loggar ut automatisk efter 30 min...
                 x.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 //Denna del gör så att ExpireTime nollställ så for en sida laddas om...
                 x.SlidingExpiration = true;
+            });
+
+            builder.Services.AddAuthorization(x =>
+            {
+                x.AddPolicy("SuperAdmins", policy => policy.RequireRole("SuperAdmin"));
+                x.AddPolicy("CIO", policy => policy.RequireRole("SuperAdmin", "CIO"));
+                x.AddPolicy("Admins", policy => policy.RequireRole("SuperAdmin", "CIO", "Admin"));
+                x.AddPolicy("Managers", policy => policy.RequireRole("SuperAdmin", "CIO", "Admin", "Manager"));
+                x.AddPolicy("AuthenticatedUsers", policy => policy.RequireRole("SuperAdmin", "CIO", "Admin", "Manager", "Users"));
             });
 
             //Lägg till Facebook auth...
@@ -83,9 +95,23 @@ namespace Infrastructure
             app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
             app.UseAuthorization(); // Vad får du göra?
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                string[] roles = ["SuperAdmin", "CIO", "Admin", "Manager", "User"];
+
+                foreach(var role in roles)
+                {
+                    if(!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
+
+                app.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

@@ -2,7 +2,7 @@
 <section id="account" class="container">
         <div class="leftside">
 
-            @Html.Partial("~/Views/Account/UserInfo.cshtml", ViewData["UserInfo"])
+        @Html.Partial("~/Views/Account/UserInfo.cshtml", ViewData["UserInfo"])
         
         </div>
         <hr class="hr"/>
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            @Html.Partial("~/Views/Account/BasicInfo.cshtml", ViewData["BasicInfo"])
+        @Html.Partial("~/Views/Account/BasicInfo.cshtml", ViewData["BasicInfo"])
 
             <hr>
 
@@ -50,8 +50,10 @@
                     }
                 </div>
 
-                @Html.Partial("~/Views/Account/AddressInfo.cshtml", ViewData["AddressInfo"])
+            @Html.Partial("~/Views/Account/AddressInfo.cshtml", ViewData["AddressInfo"])
     
             </div>
         </div>
     </section>
+
+@await Html.PartialAsync("_ValidationScriptPartial")

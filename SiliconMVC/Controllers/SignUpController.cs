@@ -62,7 +62,12 @@ namespace SiliconMVC.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("SignIn", "Account");
+                    var roleResult = await _userManager.AddToRoleAsync(userEntity, "User");
+
+                    if(roleResult.Succeeded)
+                    {
+                        return RedirectToAction("SignIn", "Account");
+                    }
                 }
             }
             return View(viewModel);

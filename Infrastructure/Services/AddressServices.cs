@@ -17,7 +17,7 @@ namespace Infrastructure.Services
         }
 
         //Create
-        public async Task<RepositoriesResult> CreateAddress(AccountDertailsAddressModel address)
+        public async Task<RepositoriesResult> CreateAddress(AccountDetailsAddressModel address)
         {
             try
             {

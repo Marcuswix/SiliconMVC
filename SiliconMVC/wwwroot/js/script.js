@@ -78,6 +78,29 @@ function hideMessage() {
     applicationForm.classList.add("hideForm")
 }
 
+const messageApplication = document.getElementById("ThanksforyourMessage");
+
+function onsubmitMessage() {
+
+
+    setTimeout(function () {
+        messageApplication.classList.remove("success");
+        messageApplication.classList.add("hide");
+    }, 3000);
+}
+const messageMessage = document.getElementById("thanksforyourApplication");
+function onsubmitApplication() {
+
+    setTimeout(function () {
+        messageMessage.classList.remove("success");
+        messageMessage.classList.add("hide");
+    }, 3000);
+}
+
+
+
+
+
 
 
 
