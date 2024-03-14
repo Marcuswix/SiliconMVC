@@ -6,7 +6,7 @@ namespace Infrastructure.Controllers
     {
         public IActionResult Index()
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Our Courses";
             return View();

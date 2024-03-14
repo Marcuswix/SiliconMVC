@@ -7,7 +7,7 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        ViewBag.ShowDiv = true;
+        ViewBag.ShowFooter = true;
         ViewBag.ShowChoices = true;
         ViewData["Title"] = "Home";
         return View();
@@ -18,7 +18,7 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = true;
             ViewData["Title"] = "Home";
             return View(viewModel);

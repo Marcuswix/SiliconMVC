@@ -11,7 +11,7 @@ namespace SiliconMVC.Controllers
         [Route("/admin")]
         public IActionResult Index()
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             return View();
         }
@@ -19,7 +19,7 @@ namespace SiliconMVC.Controllers
         [Authorize(Policy = "CIO")]
         public IActionResult Settings() 
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             return View();
         }

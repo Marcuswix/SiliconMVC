@@ -9,7 +9,7 @@ namespace Infrastructure.Controllers
         [Route("/contact")]
         public IActionResult Index()
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Contact";
             return View();
@@ -20,7 +20,7 @@ namespace Infrastructure.Controllers
         [HttpPost]
         public async Task <IActionResult> Message(MessageViewModel viewModel)
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Contact";
 
@@ -36,7 +36,7 @@ namespace Infrastructure.Controllers
         [HttpPost]
         public async Task <IActionResult> Application(MessageViewModel model)
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Contact";
 

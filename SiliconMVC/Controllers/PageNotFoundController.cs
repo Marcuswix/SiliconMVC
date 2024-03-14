@@ -8,7 +8,7 @@ namespace Infrastructure.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            ViewBag.ShowDiv = false;
+            ViewBag.ShowFooter = false;
             ViewBag.ShowChoices = false;
             return View();
         }
@@ -17,7 +17,7 @@ namespace Infrastructure.Controllers
         [HttpGet]
         public IActionResult Denied()
         {
-            ViewBag.ShowDiv = false;
+            ViewBag.ShowFooter = false;
             ViewBag.ShowChoices = false;
             return View();
         }

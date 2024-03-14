@@ -25,7 +25,7 @@ namespace Infrastructure.Controllers
 
         private void SetDefaultViewValues()
         {
-            ViewBag.ShowDiv = false;
+            ViewBag.ShowFooter = false;
             ViewBag.ShowChoices = false;
         }
 
@@ -37,7 +37,7 @@ namespace Infrastructure.Controllers
         [Route("/account")]
         public async Task<IActionResult> Index()
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 
@@ -103,7 +103,7 @@ namespace Infrastructure.Controllers
         [Authorize]
         public async Task<IActionResult> BasicInfo()
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 
@@ -141,7 +141,7 @@ namespace Infrastructure.Controllers
         [Authorize]
         public async Task<IActionResult> AddressInfo()
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 
@@ -199,7 +199,7 @@ namespace Infrastructure.Controllers
         [HttpPost] 
         public async Task<IActionResult> SaveBasicInfo(AccountBasicInfoViewModel model)
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 
@@ -245,7 +245,7 @@ namespace Infrastructure.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveAddressInfo(AccountAddressDetailsViewModel model)
         {
-            ViewBag.ShowDiv = true;
+            ViewBag.ShowFooter = true;
             ViewBag.ShowChoices = false;
             ViewData["Title"] = "Account Details";
 

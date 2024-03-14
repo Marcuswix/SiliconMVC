@@ -17,5 +17,9 @@ namespace Infrastructure.Contexts
         public DbSet<IntegrateItemEntity> IntegrateItem { get; set; }
 
         public DbSet<IntegrateEntity> Integrate {  get; set; }
+
+        public DbSet<ManageItemEntity> ManageItems { get; set; }
+
+        public DbSet<ManageEntity> Manage { get; set; }
     }
 }

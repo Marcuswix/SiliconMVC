@@ -18,7 +18,7 @@ namespace SiliconMVC.Controllers
 
         public void SetDefaultValues()
         {
-            ViewBag.ShowDiv = false;
+            ViewBag.ShowFooter = false;
             ViewBag.ShowChoices = false;
         }
 
